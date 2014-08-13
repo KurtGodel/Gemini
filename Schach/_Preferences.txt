@@ -1,0 +1,2 @@
+CpuStartTime	300000
+HumanStartTime	1200000
