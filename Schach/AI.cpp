@@ -1288,14 +1288,7 @@ float AI::getExtension(int layer, Move m, float depthLeft, bool inCheck, int ran
         else if(abs(board.b[m.from]) == 1 && (m.to%8 == 1 || m.to%8 == 6))
         {
             // near promotion
-            if(useStabilityExtensions)
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
+            return 0;
         }
         else
         {
@@ -1308,21 +1301,6 @@ float AI::getExtension(int layer, Move m, float depthLeft, bool inCheck, int ran
             else
             {
                 // non-capture
-                if(evaluator.getPieceCount() <= 7 && abs(board.b[m.from%100]) == 6 && useStabilityExtensions)
-                {
-                    // extend king directional moves if in endgame
-                    if(board.history.size() >= 10)
-                    {
-                        if(board.history[board.history.size()-9] == m.from%100)
-                        {
-                            // last move was king-move
-                            if(board.history[board.history.size()-9] - board.history[board.history.size()-10] == m.to - m.from)
-                            {
-                                return 1.0;
-                            }
-                        }
-                    }
-                }
                 if(useLateMoveReductions && moveLength[layer]-500*layer > minimumLegalMovesToLMR)
                 {
                     // use LMR (late move reduction)

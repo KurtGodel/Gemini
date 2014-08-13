@@ -60,7 +60,7 @@ private:
     bool useNullMove = true;
     int minimumLegalMovesToNullMovePrune = 15;
     int minimumPiecesToNullMovePrune = 6;
-    float nullR = 3;
+    float nullR = 2;
     
     bool useLateMoveReductions = true;
     int minimumLegalMovesToLMR = 15;
