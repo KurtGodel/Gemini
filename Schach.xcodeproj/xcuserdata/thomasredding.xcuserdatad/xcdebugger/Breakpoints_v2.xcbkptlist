@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "796"
             endingLineNumber = "796"
-            landmarkName = "Evaluator::queenEndgameEval(int layer)"
+            landmarkName = "Evaluator::kVkp(int layer)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -31,7 +31,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "840"
             endingLineNumber = "840"
-            landmarkName = "Evaluator::queenEndgameEval(int layer)"
+            landmarkName = "Evaluator::kVkp(int layer)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -47,7 +47,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "700"
             endingLineNumber = "700"
-            landmarkName = "Evaluator::rookEndgameEval(int layer)"
+            landmarkName = "Evaluator::kpVk(int layer)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -63,7 +63,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "959"
             endingLineNumber = "959"
-            landmarkName = "Evaluator::BBendgameEval(int layer)"
+            landmarkName = "Evaluator::rookEndgameEval(int layer)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -79,7 +79,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "917"
             endingLineNumber = "917"
-            landmarkName = "Evaluator::BBendgameEval(int layer)"
+            landmarkName = "Evaluator::rookEndgameEval(int layer)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

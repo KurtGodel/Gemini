@@ -54,22 +54,34 @@ private:
     MoveConverter moveConverter;
     
     MovementCalculator movementCalculator;
-        
-    bool useOpeningBook = true;
     
-    bool useNullMove = true;
-    int minimumLegalMovesToNullMovePrune = 15;
-    int minimumPiecesToNullMovePrune = 6;
-    float nullR = 2;
     
-    bool useLateMoveReductions = true;
-    int minimumLegalMovesToLMR = 15;
-    int numberOfNonLateMoveReductions = 4;
+    bool useOpeningBook = true;                 // passed 0.05 test
     
-    bool useFutilityPruning = true;
-    int futilityMargin = 1000;
     
-    bool useStabilityExtensions = true;
+    
+    bool useNullMove = true;                    // passed 0.05 test
+
+    int minimumLegalMovesToNullMovePrune = 15;  // I refuse to tounament-test this, because the fact that I use material to determine wins means that
+                                                // Zugzwang will be undervalued durings tournament-tests
+    
+    int minimumPiecesToNullMovePrune = 6;       // See above
+    
+    float nullR = 2;                            // passed 0.05 test compared to 1 and 3
+    
+    
+    
+    bool useLateMoveReductions = true;          // passed 0.05 test
+    
+    int minimumLegalMovesToLMR = 15;            // TODO
+    
+    int numberOfNonLateMoveReductions = 4;      // essentially tied with 3
+    
+    
+    
+    bool useFutilityPruning = true;             // passed 0.05 test
+    
+    int futilityMargin = 500;                   // passed 0.20 test compared to 1000
     
     
     

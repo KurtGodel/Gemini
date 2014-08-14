@@ -125,7 +125,6 @@ void AI::run()
         useLateMoveReductions = gameAiCommunicator->useLateMoveReductions;
         useNullMove = gameAiCommunicator->useNullMove;
         useFutilityPruning = gameAiCommunicator->useFutilityPruning;
-        useStabilityExtensions = gameAiCommunicator->useStabilityExtensions;
         gameAiCommunicator->lock.unlock();
         
         setMoves(0);    // get legal moves
@@ -653,11 +652,17 @@ void AI::orderMoves(int layer, Node* hash, float depthLeft, int alpha, int beta)
      -1 - -10   "bad" captures
      -100±10ish other
      */
+    
+    Move mo;
+    
     if(layer%2 == 0)
     {
         // cpu
         for(int i=500*layer; i<moveLength[layer]; i++)
         {
+            mo.from = move[i].from;
+            mo.to = move[i].to;
+            
             moveOrder[i] = i;
             if(hash && hash->bestMove == 100*move[i].from+move[i].to)
             {
@@ -831,6 +836,12 @@ Node* AI::searchTranspositionTable()
 
 int AI::alphaBetaMakeMove(Move m, int layer, float depthLeft, int alpha, int beta)
 {
+    if(abs(board.b[m.to]) == 6)
+    {
+        // king captured - whoever is moving just "won"
+        return layer - 1000000000;
+    }
+    
     int pieceTaken = evaluator.makeMove(m.from, m.to, layer, &board);
     board.makeMove(m);
     int value = alphaBetaTree(layer, depthLeft, alpha, beta, m.to);

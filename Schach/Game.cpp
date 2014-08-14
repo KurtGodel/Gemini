@@ -4106,7 +4106,6 @@ void Game::writeToCommunicator()
     gameAiCommunicator->useLateMoveReductions = true;       // keep true until future notice
     gameAiCommunicator->useNullMove = true;                 // keep true until future notice
     gameAiCommunicator->useFutilityPruning = false;         // keep false until future notice
-    gameAiCommunicator->useStabilityExtensions = false;     // keep false until future notice
     
     gameAiCommunicator->start = true;
     gameAiCommunicator->shouldAiBeRunning = true;
