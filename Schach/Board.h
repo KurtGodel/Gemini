@@ -11,7 +11,6 @@
 
 #include <iostream>
 #include <vector>
-#include "Node.h"
 #include "Move.h"
 #include "PieceConstants.h"
 
@@ -44,19 +43,19 @@ public:
     std::string toString();
     void setRandomArr();
     
-    const uint8_t USER_KING     = 0;
-    const uint8_t USER_QUEEN    = 1;
-    const uint8_t USER_ROOK     = 2;
-    const uint8_t USER_BISHIP   = 3;
-    const uint8_t USER_KNIGHT   = 4;
-    const uint8_t USER_PAWN     = 5;
-    const uint8_t EMPTY         = 6;
-    const uint8_t CPU_PAWN      = 7;
-    const uint8_t CPU_KNIGHT    = 8;
-    const uint8_t CPU_BISHOP    = 9;
-    const uint8_t CPU_ROOK      = 10;
-    const uint8_t CPU_QUEEN     = 11;
-    const uint8_t CPU_KING      = 12;
+    static const uint8_t USER_KING     = 0;
+    static const uint8_t USER_QUEEN    = 1;
+    static const uint8_t USER_ROOK     = 2;
+    static const uint8_t USER_BISHIP   = 3;
+    static const uint8_t USER_KNIGHT   = 4;
+    static const uint8_t USER_PAWN     = 5;
+    static const uint8_t EMPTY         = 6;
+    static const uint8_t CPU_PAWN      = 7;
+    static const uint8_t CPU_KNIGHT    = 8;
+    static const uint8_t CPU_BISHOP    = 9;
+    static const uint8_t CPU_ROOK      = 10;
+    static const uint8_t CPU_QUEEN     = 11;
+    static const uint8_t CPU_KING      = 12;
     uint64_t bitmaps[13];
     
     uint64_t cpu;
@@ -66,9 +65,8 @@ public:
     bool operator==(const Board& board);
     bool operator!=(const Board& board);
     
-    uint8_t lsm(const uint64_t& input) const;
-    
-    const uint8_t lsmArray[64] = {
+    const uint8_t lsmArray[64] =
+    {
         0,  1,  2, 53,  3,  7, 54, 27,
         4, 38, 41,  8, 34, 55, 48, 28,
         62,  5, 39, 46, 44, 42, 22,  9,
@@ -78,6 +76,9 @@ public:
         51, 25, 36, 32, 60, 20, 57, 16,
         50, 31, 19, 15, 30, 14, 13, 12
     };
+    
+    uint8_t lsm(const uint64_t& input) const;
+    uint8_t decrementBitboard(uint64_t& input) const;
     
     std::string printBitmap(uint64_t bitmap);
     

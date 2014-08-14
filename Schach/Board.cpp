@@ -777,6 +777,14 @@ void Board::unmakeMove()
     }
 }
 
-uint8_t Board::lsm(const uint64_t& input) const {
+uint8_t Board::lsm(const uint64_t& input) const
+{
     return lsmArray[((input & -input) * 0x022fdd63cc95386d) >> 58];
+}
+
+uint8_t Board::decrementBitboard(uint64_t& input) const
+{
+    uint64_t r = input & -input;
+    input -= r;
+    return lsmArray[(r * 0x022fdd63cc95386d) >> 58];
 }

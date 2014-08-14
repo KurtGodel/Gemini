@@ -10,6 +10,7 @@
 #define __Schach__MoveConverter__
 
 #include <iostream>
+#include "PieceConstants.h"
 #include "Board.h"
 
 class MoveConverter
