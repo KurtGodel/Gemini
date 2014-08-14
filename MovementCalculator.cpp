@@ -15,13 +15,24 @@ uint8_t MovementCalculator::calculateMoves(Move *_moves, bool userToMove)
     
     Tile tile;
     uint64_t myPieces;
+    
+    int8_t enPassantFilePotential = -1;
+    
     if(userToMove)
     {
+        if(board.lastMove[0] - board.lastMove[1] == 2)
+        {
+            if(board.b[board.lastMove[1]] == -1)
+            {
+                enPassantFilePotential = board.lastMove[1];
+            }
+        }
+        
         myPieces = board.bitmaps[Board::USER_PAWN];
         while(myPieces != 0)
         {
             tile = Tile(decrementBitboard(myPieces));
-            pawn(tile, userToMove);
+            pawn(tile, userToMove, enPassantFilePotential);
         }
         
         myPieces = board.bitmaps[Board::USER_KNIGHT];
@@ -61,11 +72,19 @@ uint8_t MovementCalculator::calculateMoves(Move *_moves, bool userToMove)
     }
     else
     {
+        if(board.lastMove[1] - board.lastMove[0] == 2)
+        {
+            if(board.b[board.lastMove[1]] == 1)
+            {
+                enPassantFilePotential = board.lastMove[1];
+            }
+        }
+        
         myPieces = board.bitmaps[Board::CPU_PAWN];
         while(myPieces != 0)
         {
             tile = Tile(decrementBitboard(myPieces));
-            pawn(tile, userToMove);
+            pawn(tile, userToMove, enPassantFilePotential);
         }
         
         myPieces = board.bitmaps[Board::CPU_KNIGHT];
@@ -106,7 +125,7 @@ uint8_t MovementCalculator::calculateMoves(Move *_moves, bool userToMove)
     return numberOfMoves;
 }
 
-void MovementCalculator::pawn(const Tile &tile, bool userToMove)
+void MovementCalculator::pawn(const Tile &tile, bool userToMove, int8_t enPassantIndex)
 {
     if(userToMove)
     {
@@ -133,6 +152,15 @@ void MovementCalculator::pawn(const Tile &tile, bool userToMove)
             moves[numberOfMoves].from = tile.index;
             moves[numberOfMoves].to = tile.index + 9;
             numberOfMoves++;
+        }
+        if(enPassantIndex != -1)
+        {
+            if(abs(tile.index - enPassantIndex) < 10)
+            {
+                moves[numberOfMoves].from = tile.index;
+                moves[numberOfMoves].to = enPassantIndex + 1;
+                numberOfMoves++;
+            }
         }
     }
     else
@@ -161,6 +189,15 @@ void MovementCalculator::pawn(const Tile &tile, bool userToMove)
             moves[numberOfMoves].to = tile.index + 7;
             numberOfMoves++;
         }
+        if(enPassantIndex != -1)
+        {
+            if(abs(tile.index - enPassantIndex) < 10)
+            {
+                moves[numberOfMoves].from = tile.index;
+                moves[numberOfMoves].to = enPassantIndex - 1;
+                numberOfMoves++;
+            }
+        }
     }
 }
 
@@ -178,8 +215,7 @@ void MovementCalculator::knight(const Tile &tile, bool userToMove)
     uint8_t to;
     while(to64 != 0)
     {
-        to = lsm(to64);
-        to64 -= to64 & -to64;
+        to = decrementBitboard(to64);
         moves[numberOfMoves].from = tile.index;
         moves[numberOfMoves].to = to;
         numberOfMoves++;

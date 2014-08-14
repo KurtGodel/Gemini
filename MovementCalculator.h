@@ -30,7 +30,7 @@ private:
     bool userToMove;
     uint8_t numberOfMoves;
     
-    void pawn(const Tile& tile, bool userToMove);
+    void pawn(const Tile& tile, bool userToMove, int8_t enPassantFile);
     void knight(const Tile& tile, bool userToMove);
     void bishop(const Tile& tile, bool userToMove);
     void rook(const Tile& tile, bool userToMove);
