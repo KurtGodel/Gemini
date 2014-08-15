@@ -522,6 +522,10 @@ void MovementCalculator::king(const Tile& tile, bool userToMove)
     {
         if(tile.index == 32)
         {
+            bool check = false;
+            if(board.castling[2] || board.castling[3]) {
+                check = isSquareInCheck(tile, !userToMove);
+            }
             if(board.castling[2] && board.b[8] == 0 && board.b[16] == 0 && board.b[24] == 0)
             {
                 // queen-side
@@ -548,6 +552,10 @@ void MovementCalculator::king(const Tile& tile, bool userToMove)
     {
         if(tile.index == 39)
         {
+            bool check = false;
+            if(board.castling[0] || board.castling[1]) {
+                check = isSquareInCheck(tile, !userToMove);
+            }
             if(board.castling[0] && board.b[15] == 0 && board.b[23] == 0 && board.b[31] == 0)
             {
                 // queen-side
