@@ -30,12 +30,29 @@ private:
     bool userToMove;
     uint8_t numberOfMoves;
     
-    void pawn(const Tile& tile, bool userToMove);
+    void pawn(const Tile& tile, bool userToMove, int8_t enPassantFile);
     void knight(const Tile& tile, bool userToMove);
     void bishop(const Tile& tile, bool userToMove);
     void rook(const Tile& tile, bool userToMove);
     void queen(const Tile& tile, bool userToMove);
     void king(const Tile& tile, bool userToMove);
+    
+    const uint8_t lsmArray[64] =
+    {
+        0,  1,  2, 53,  3,  7, 54, 27,
+        4, 38, 41,  8, 34, 55, 48, 28,
+        62,  5, 39, 46, 44, 42, 22,  9,
+        24, 35, 59, 56, 49, 18, 29, 11,
+        63, 52,  6, 26, 37, 40, 33, 47,
+        61, 45, 43, 21, 23, 58, 17, 10,
+        51, 25, 36, 32, 60, 20, 57, 16,
+        50, 31, 19, 15, 30, 14, 13, 12
+    };
+    
+    uint8_t lsm(const uint64_t& input) const;
+    uint8_t decrementBitboard(uint64_t& input) const;
+    
+    bool isSquareInCheck(Tile tile, bool userToMove);
     
     const uint64_t knightMovement[64] =
     {
@@ -170,17 +187,6 @@ private:
         0x5070000000000000,
         0xa0e0000000000000,
         0x40c0000000000000,
-    };
-    
-    const unsigned char lsmArray[64] = {
-        0,  1,  2, 53,  3,  7, 54, 27,
-        4, 38, 41,  8, 34, 55, 48, 28,
-        62,  5, 39, 46, 44, 42, 22,  9,
-        24, 35, 59, 56, 49, 18, 29, 11,
-        63, 52,  6, 26, 37, 40, 33, 47,
-        61, 45, 43, 21, 23, 58, 17, 10,
-        51, 25, 36, 32, 60, 20, 57, 16,
-        50, 31, 19, 15, 30, 14, 13, 12
     };
     
     const unsigned char bishopNorthWest[64] = {
