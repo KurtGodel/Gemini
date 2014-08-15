@@ -129,73 +129,175 @@ void MovementCalculator::pawn(const Tile &tile, bool userToMove, int8_t enPassan
 {
     if(userToMove)
     {
-        if(board.b[tile.index + 1] == 0)
+        if(tile.rank == 6)
         {
-            moves[numberOfMoves].from = tile.index;
-            moves[numberOfMoves].to = tile.index + 1;
-            numberOfMoves++;
-            if(tile.rank == 1 && board.b[tile.index + 2] == 0)
+            if(board.b[tile.index + 1] == 0)
             {
-                moves[numberOfMoves].from = tile.index;
-                moves[numberOfMoves].to = tile.index + 2;
+                moves[numberOfMoves].from = tile.index + 200;
+                moves[numberOfMoves].to = tile.index + 1;
+                numberOfMoves++;
+                moves[numberOfMoves].from = tile.index + 300;
+                moves[numberOfMoves].to = tile.index + 1;
+                numberOfMoves++;
+                moves[numberOfMoves].from = tile.index + 400;
+                moves[numberOfMoves].to = tile.index + 1;
+                numberOfMoves++;
+                moves[numberOfMoves].from = tile.index + 500;
+                moves[numberOfMoves].to = tile.index + 1;
+                numberOfMoves++;
+            }
+            if(tile.file != 0 && board.b[tile.index - 7] > 0)
+            {
+                moves[numberOfMoves].from = tile.index + 200;
+                moves[numberOfMoves].to = tile.index - 7;
+                numberOfMoves++;
+                moves[numberOfMoves].from = tile.index + 300;
+                moves[numberOfMoves].to = tile.index - 7;
+                numberOfMoves++;
+                moves[numberOfMoves].from = tile.index + 400;
+                moves[numberOfMoves].to = tile.index - 7;
+                numberOfMoves++;
+                moves[numberOfMoves].from = tile.index + 500;
+                moves[numberOfMoves].to = tile.index - 7;
+                numberOfMoves++;
+            }
+            if(tile.file != 7 && board.b[tile.index + 9] > 0)
+            {
+                moves[numberOfMoves].from = tile.index + 200;
+                moves[numberOfMoves].to = tile.index + 9;
+                numberOfMoves++;
+                moves[numberOfMoves].from = tile.index + 300;
+                moves[numberOfMoves].to = tile.index + 9;
+                numberOfMoves++;
+                moves[numberOfMoves].from = tile.index + 400;
+                moves[numberOfMoves].to = tile.index + 9;
+                numberOfMoves++;
+                moves[numberOfMoves].from = tile.index + 500;
+                moves[numberOfMoves].to = tile.index + 9;
                 numberOfMoves++;
             }
         }
-        if(tile.file != 0 && board.b[tile.index - 7] > 0)
+        else
         {
-            moves[numberOfMoves].from = tile.index;
-            moves[numberOfMoves].to = tile.index - 7;
-            numberOfMoves++;
-        }
-        if(tile.file != 7 && board.b[tile.index + 9] > 0)
-        {
-            moves[numberOfMoves].from = tile.index;
-            moves[numberOfMoves].to = tile.index + 9;
-            numberOfMoves++;
-        }
-        if(enPassantIndex != -1)
-        {
-            if(abs(tile.index - enPassantIndex) < 10)
+            if(board.b[tile.index + 1] == 0)
             {
                 moves[numberOfMoves].from = tile.index;
-                moves[numberOfMoves].to = enPassantIndex + 1;
+                moves[numberOfMoves].to = tile.index + 1;
                 numberOfMoves++;
+                if(tile.rank == 1 && board.b[tile.index + 2] == 0)
+                {
+                    moves[numberOfMoves].from = tile.index;
+                    moves[numberOfMoves].to = tile.index + 2;
+                    numberOfMoves++;
+                }
+            }
+            if(tile.file != 0 && board.b[tile.index - 7] > 0)
+            {
+                moves[numberOfMoves].from = tile.index;
+                moves[numberOfMoves].to = tile.index - 7;
+                numberOfMoves++;
+            }
+            if(tile.file != 7 && board.b[tile.index + 9] > 0)
+            {
+                moves[numberOfMoves].from = tile.index;
+                moves[numberOfMoves].to = tile.index + 9;
+                numberOfMoves++;
+            }
+            if(enPassantIndex != -1)
+            {
+                if(abs(tile.index - enPassantIndex) < 10)
+                {
+                    moves[numberOfMoves].from = tile.index;
+                    moves[numberOfMoves].to = enPassantIndex + 1;
+                    numberOfMoves++;
+                }
             }
         }
     }
     else
     {
-        if(board.b[tile.index - 1] == 0)
+        if(tile.rank == 1)
         {
-            moves[numberOfMoves].from = tile.index;
-            moves[numberOfMoves].to = tile.index - 1;
-            numberOfMoves++;
-            if(tile.rank == 6 && board.b[tile.index - 2] == 0)
+            if(board.b[tile.index - 1] == 0)
             {
-                moves[numberOfMoves].from = tile.index;
-                moves[numberOfMoves].to = tile.index - 2;
+                moves[numberOfMoves].from = tile.index + 200;
+                moves[numberOfMoves].to = tile.index - 1;
+                numberOfMoves++;
+                moves[numberOfMoves].from = tile.index + 300;
+                moves[numberOfMoves].to = tile.index - 1;
+                numberOfMoves++;
+                moves[numberOfMoves].from = tile.index + 400;
+                moves[numberOfMoves].to = tile.index - 1;
+                numberOfMoves++;
+                moves[numberOfMoves].from = tile.index + 500;
+                moves[numberOfMoves].to = tile.index - 1;
+                numberOfMoves++;
+            }
+            if(tile.file != 0 && board.b[tile.index - 9] < 0)
+            {
+                moves[numberOfMoves].from = tile.index + 200;
+                moves[numberOfMoves].to = tile.index - 9;
+                numberOfMoves++;
+                moves[numberOfMoves].from = tile.index + 300;
+                moves[numberOfMoves].to = tile.index - 9;
+                numberOfMoves++;
+                moves[numberOfMoves].from = tile.index + 400;
+                moves[numberOfMoves].to = tile.index - 9;
+                numberOfMoves++;
+                moves[numberOfMoves].from = tile.index + 500;
+                moves[numberOfMoves].to = tile.index - 9;
+                numberOfMoves++;
+            }
+            if(tile.file != 7 && board.b[tile.index + 7] < 0)
+            {
+                moves[numberOfMoves].from = tile.index + 200;
+                moves[numberOfMoves].to = tile.index + 7;
+                numberOfMoves++;
+                moves[numberOfMoves].from = tile.index + 200;
+                moves[numberOfMoves].to = tile.index + 7;
+                numberOfMoves++;
+                moves[numberOfMoves].from = tile.index + 200;
+                moves[numberOfMoves].to = tile.index + 7;
+                numberOfMoves++;
+                moves[numberOfMoves].from = tile.index + 200;
+                moves[numberOfMoves].to = tile.index + 7;
                 numberOfMoves++;
             }
         }
-        if(tile.file != 0 && board.b[tile.index - 9] < 0)
+        else
         {
-            moves[numberOfMoves].from = tile.index;
-            moves[numberOfMoves].to = tile.index - 9;
-            numberOfMoves++;
-        }
-        if(tile.file != 7 && board.b[tile.index + 7] < 0)
-        {
-            moves[numberOfMoves].from = tile.index;
-            moves[numberOfMoves].to = tile.index + 7;
-            numberOfMoves++;
-        }
-        if(enPassantIndex != -1)
-        {
-            if(abs(tile.index - enPassantIndex) < 10)
+            if(board.b[tile.index - 1] == 0)
             {
                 moves[numberOfMoves].from = tile.index;
-                moves[numberOfMoves].to = enPassantIndex - 1;
+                moves[numberOfMoves].to = tile.index - 1;
                 numberOfMoves++;
+                if(tile.rank == 6 && board.b[tile.index - 2] == 0)
+                {
+                    moves[numberOfMoves].from = tile.index;
+                    moves[numberOfMoves].to = tile.index - 2;
+                    numberOfMoves++;
+                }
+            }
+            if(tile.file != 0 && board.b[tile.index - 9] < 0)
+            {
+                moves[numberOfMoves].from = tile.index;
+                moves[numberOfMoves].to = tile.index - 9;
+                numberOfMoves++;
+            }
+            if(tile.file != 7 && board.b[tile.index + 7] < 0)
+            {
+                moves[numberOfMoves].from = tile.index;
+                moves[numberOfMoves].to = tile.index + 7;
+                numberOfMoves++;
+            }
+            if(enPassantIndex != -1)
+            {
+                if(abs(tile.index - enPassantIndex) < 10)
+                {
+                    moves[numberOfMoves].from = tile.index;
+                    moves[numberOfMoves].to = enPassantIndex - 1;
+                    numberOfMoves++;
+                }
             }
         }
     }
@@ -228,7 +330,7 @@ void MovementCalculator::bishop(const Tile& tile, bool userToMove)
     
     diagonalLength = bishopNorthEast[tile.index];
     index = tile.index;
-    for(uint8_t i = 1; i < diagonalLength; i++)
+    for(uint8_t i = 0; i < diagonalLength; i++)
     {
         index -= 7;
         if(board.b[index] == 0)
@@ -297,7 +399,7 @@ void MovementCalculator::bishop(const Tile& tile, bool userToMove)
     
     diagonalLength = bishopSouthWest[tile.index];
     index = tile.index;
-    for(uint8_t i = 1; i < diagonalLength; i++)
+    for(uint8_t i = 0; i < diagonalLength; i++)
     {
         index += 7;
         if(board.b[index] == 0)
