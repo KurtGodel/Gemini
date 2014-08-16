@@ -166,9 +166,9 @@ void AI::run()
                 float timeAdjust = 0.90*gameStage()+0.10;     // adjusted to add extra room at end of game
                 minimumTime = cpuTimeLeft/timeAdjust;
                 minimumTime /= 50;                          // estimated number of moves in a game
-                minimumTime /= 3;                         // adjust due to imperfect stopping
+                minimumTime /= 2;                         // adjust due to imperfect stopping
                 
-                maximumTime = 6*minimumTime;
+                maximumTime = 8*minimumTime;
                 
                 startTime = std::chrono::system_clock::now().time_since_epoch()/std::chrono::milliseconds(1);
                 int openingMove;

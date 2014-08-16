@@ -1337,6 +1337,18 @@ int Evaluator::eval(int layer, int endOfLastMove)
     net += stage * result.x;
     net -= stage * result.y;
     
+    if(layer%2 == 0)
+    {
+        net += openingInitiativeBonus * stage + endingInitiativeBonus * (1-stage);
+    }
+    else
+    {
+        net -= openingInitiativeBonus * stage + endingInitiativeBonus * (1-stage);
+    }
+    
+    // contempt factor
+    net += contemptFactorSlope * (stage-0.5);
+    
     return net;
 }
 

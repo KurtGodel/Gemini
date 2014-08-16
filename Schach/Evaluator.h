@@ -226,6 +226,11 @@ private:
     
     int closeToKingSafetyBonus = 0;
     int closeToKingDangerBonus = -135;
+    int openingInitiativeBonus = 75;
+    int endingInitiativeBonus = 75;
+    
+    //
+    int contemptFactorSlope = 100;          // multiplied by stage (between 1.0 and 0.0)
     
     Board* board;
     
