@@ -131,6 +131,7 @@ void AI::run()
         if(moveLength[0] == 0)
         {
             // no legal move
+            
             while(!gameAiCommunicator->lock.try_lock()) {}
             gameAiCommunicator->from = -1;
             gameAiCommunicator->to = -1;

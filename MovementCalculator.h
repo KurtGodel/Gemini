@@ -22,10 +22,10 @@
 class MovementCalculator
 {
 public:
-    MovementCalculator(const Board& board) : board(board) {};
+    MovementCalculator(Board& board) : board(board) {};
     uint8_t calculateMoves(Move* moves, bool userToMove);
 private:
-    Board board;
+    Board& board;
     Move* moves;
     bool userToMove;
     uint8_t numberOfMoves;

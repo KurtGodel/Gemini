@@ -13,7 +13,7 @@ void MovementCalculator::addMove(uint16_t from, uint16_t to)
     moves[numberOfMoves].from = from;
     moves[numberOfMoves].to = to;
     board.makeMove(moves[numberOfMoves]);
-    
+
     Tile myKing;
     if(userToMove)
     {
@@ -23,11 +23,12 @@ void MovementCalculator::addMove(uint16_t from, uint16_t to)
     {
         myKing = Tile(lsm(board.bitmaps[Board::CPU_KING]));
     }
-    
     if(isSquareInCheck(myKing, !userToMove))
     {
+        board.unmakeMove();
         return;
     }
+    board.unmakeMove();
     numberOfMoves++;
 }
 
