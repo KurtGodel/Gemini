@@ -66,11 +66,6 @@ private:
     int minimumLegalMovesToLMR = 15;
     int numberOfNonLateMoveReductions = 4;
     
-    bool useFutilityPruning = true;
-    int futilityMargin = 1000;
-    
-    bool useStabilityExtensions = true;
-    
     
     
     
@@ -85,7 +80,6 @@ private:
     int aiInCheck(int king);
     int humanInCheck(int kingsq);
     bool willMovePutMeInCheck(int king, Move move);
-    int futilityPruning(int layer, float depthLeft, int alpha, int beta, int endOfLastMove, Node* hash);
     
     int alphaBetaTree(int layer, float depthLeft, int alpha, int beta, int endOfLastMove);
     int alphaBetaMakeMove(Move m, int layer, float depthLeft, int alpha, int beta);
