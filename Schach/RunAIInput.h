@@ -33,8 +33,6 @@ public:
     bool useNullMove = true;
     bool useLateMoveReductions = true;
     bool useOpeningBook = true;
-    bool useFutilityPruning = true;
-    bool useStabilityExtensions = true;
 };
 
 #endif /* defined(__Schach__RunAIInput__) */
