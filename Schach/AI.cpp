@@ -831,6 +831,11 @@ Node* AI::searchTranspositionTable()
 
 int AI::alphaBetaMakeMove(Move m, int layer, float depthLeft, int alpha, int beta)
 {
+    if(abs(board.b[m.to]) == 6)
+    {
+        // TODO
+    }
+    
     int pieceTaken = evaluator.makeMove(m.from, m.to, layer, &board);
     board.makeMove(m);
     int value = alphaBetaTree(layer, depthLeft, alpha, beta, m.to);

@@ -85,7 +85,6 @@ private:
     int openingQueenValue = 5193;
     int endingQueenValue = 7162;
     
-    //  the average pawn starts with a value of
     
     
     // 2. Pawns
@@ -93,17 +92,24 @@ private:
     int endingDoubledPawnsBonus = -303;
     int openingPawnIslandBonus = -95;
     int endingPawnIslandBonus = -30;
-    int openingCpuPassedPawnBonus[8] = {4314,1422,619,233,0,  0,0,0};
-    int endingCpuPassedPawnBonus[8] =  {6283,828, 795,389,257,0,0,0};
+    int openingPawnAdvancementBonus[8] = {0,0,0,0,0,0,0,0};
+    int endingPawnAdvancementBonus[8] = {120,100,80,60,40,20,0,0};
     
-    int openingHumanPassedPawnBonus[8];
-    int endingHumanPassedPawnBonus[8];
+    // in addition to the normal pawnAdvancementBonus
+    int openingHalfPassedPawnBonus[8] = {0,0,0,0,0,0,0,0};
+    int endingHalfPassedPawnBonus[8] = {180,150,120,90,60,30,0,0};
+    int openingPassedPawnBonus[8] = {4314,1422,619,233,0,  0,0,0};
+    int endingPassedPawnBonus[8] =  {6283,828, 795,389,257,0,0,0};
+    
+    
     
     // 3. Pieces
     int openingBishopPairBonus = 271;
     int endingBishopPairBonus = 829;
     int openingRookPairBonus = 0;
     int endingRookPairBonus = -816;
+    
+    
     
     // 4. Kings
     int cpuKingValue[64] = {
@@ -138,6 +144,8 @@ private:
     int pawnsBackRankAfterCastling = 150;
     int pawnsSecondBackRankAfterCastling = 48;
     int centerCannotCastleBonus = -36;
+    
+    
     
     // 5. Mobility (flipped for human)
     /*
@@ -214,6 +222,8 @@ private:
         },
     };
     int humanMoveBonus[6][64];
+    
+    
     
     // 6. Threats
     // rough average value of pieces
