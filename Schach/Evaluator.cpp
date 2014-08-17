@@ -15,8 +15,6 @@ Evaluator::Evaluator(Board* aiBoard)
     
     for(int x=0; x<8; x++)
     {
-        openingHumanPassedPawnBonus[7-x] = openingCpuPassedPawnBonus[x];
-        endingHumanPassedPawnBonus[7-x] = endingCpuPassedPawnBonus[x];
         for(int y=0; y<8; y++)
         {
             humanKingValue[8*x+7-y] = cpuKingValue[8*x+y];
@@ -535,6 +533,7 @@ int Evaluator::pawnStructureEval(float stage)
                 if((*board).b[k] == 1)
                 {
                     cpuPawn++;
+                    net += openingPawnAdvancementBonus[j] * stage + endingPawnAdvancementBonus[j];
                 }
             }
             else
@@ -543,6 +542,7 @@ int Evaluator::pawnStructureEval(float stage)
                 if((*board).b[k] == -1)
                 {
                     humanPawn++;
+                    net -= openingPawnAdvancementBonus[7-j] * stage + endingPawnAdvancementBonus[7-j];
                 }
             }
         }
@@ -577,26 +577,30 @@ int Evaluator::pawnStructureEval(float stage)
                     {
                         if((*board).b[8*(i-1)+j]==-1)
                         {
-                            stoF = 0;
+                            stoF -= 0.5;
                             break;
                         }
                     }
                 }
-                if(i!=7 && stoF==1)
+                if(i!=7)
                 {
                     for(j=sto-1;j>0;j--)
                     {
                         if((*board).b[8*(i+1)+j]==-1)
                         {
-                            stoF = 0;
+                            stoF -= 0.5;
                             break;
                         }
                     }
                 }
                 if(stoF==1)
                 {
-                    
-                    net += openingCpuPassedPawnBonus[sto] * stage + endingCpuPassedPawnBonus[sto] * (1-stage);
+                    // fully passed pawn
+                    net += openingPassedPawnBonus[sto] * stage + endingPassedPawnBonus[sto] * (1-stage);
+                }
+                else if(stoF == 0.5)
+                {
+                    net += openingHalfPassedPawnBonus[sto] * stage + endingHalfPassedPawnBonus[sto] * (1-stage);
                 }
             }
         }
@@ -621,7 +625,7 @@ int Evaluator::pawnStructureEval(float stage)
                     {
                         if((*board).b[8*(i-1)+j]==1)
                         {
-                            stoF = 0;
+                            stoF -= 0.5;
                             break;
                         }
                     }
@@ -632,15 +636,19 @@ int Evaluator::pawnStructureEval(float stage)
                     {
                         if((*board).b[8*(i+1)+j]==1)
                         {
-                            stoF = 0;
+                            stoF -= 0.5;
                             break;
                         }
                     }
                 }
                 if(stoF==1)
                 {
-                    
-                    net -= openingHumanPassedPawnBonus[sto] * stage + endingHumanPassedPawnBonus[sto] * (1-stage);
+                    // fully passed pawn
+                    net -= openingPassedPawnBonus[7-sto] * stage + endingPassedPawnBonus[7-sto] * (1-stage);
+                }
+                else if(stoF == 0.5)
+                {
+                    net -= openingHalfPassedPawnBonus[7-sto] * stage + endingHalfPassedPawnBonus[7-sto] * (1-stage);
                 }
             }
         }
@@ -1336,6 +1344,18 @@ int Evaluator::eval(int layer, int endOfLastMove)
     
     net += stage * result.x;
     net -= stage * result.y;
+    
+    if(layer%2 == 0)
+    {
+        net += openingInitiativeBonus * stage + endingInitiativeBonus * (1-stage);
+    }
+    else
+    {
+        net -= openingInitiativeBonus * stage + endingInitiativeBonus * (1-stage);
+    }
+    
+    // contempt factor
+    net += contemptFactorSlope * (stage-0.5);
     
     return net;
 }

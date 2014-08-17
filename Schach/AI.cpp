@@ -166,9 +166,9 @@ void AI::run()
                 float timeAdjust = 0.90*gameStage()+0.10;     // adjusted to add extra room at end of game
                 minimumTime = cpuTimeLeft/timeAdjust;
                 minimumTime /= 50;                          // estimated number of moves in a game
-                minimumTime /= 3;                         // adjust due to imperfect stopping
+                minimumTime /= 2;                         // adjust due to imperfect stopping
                 
-                maximumTime = 6*minimumTime;
+                maximumTime = 8*minimumTime;
                 
                 startTime = std::chrono::system_clock::now().time_since_epoch()/std::chrono::milliseconds(1);
                 int openingMove;
@@ -831,6 +831,11 @@ Node* AI::searchTranspositionTable()
 
 int AI::alphaBetaMakeMove(Move m, int layer, float depthLeft, int alpha, int beta)
 {
+    if(abs(board.b[m.to]) == 6)
+    {
+        // TODO
+    }
+    
     int pieceTaken = evaluator.makeMove(m.from, m.to, layer, &board);
     board.makeMove(m);
     int value = alphaBetaTree(layer, depthLeft, alpha, beta, m.to);
