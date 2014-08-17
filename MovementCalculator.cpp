@@ -8,6 +8,41 @@
 
 #include "MovementCalculator.h"
 
+void MovementCalculator::addMove(uint16_t from, uint16_t to)
+{
+    moves[numberOfMoves].from = from;
+    moves[numberOfMoves].to = to;
+    board.makeMove(moves[numberOfMoves]);
+    
+    Tile myKing;
+    if(userToMove)
+    {
+        myKing = Tile(lsm(board.bitmaps[Board::USER_KING]));
+    }
+    else
+    {
+        myKing = Tile(lsm(board.bitmaps[Board::CPU_KING]));
+    }
+    
+    if(isSquareInCheck(myKing, !userToMove))
+    {
+        return;
+    }
+    numberOfMoves++;
+}
+
+uint8_t MovementCalculator::calculateMovesInCheck(bool userToMove)
+{
+    // find what the check-threats are
+        // you can never be in check from multiple knights
+        // you can never be in check from multiple bishops
+        // you can never be in check from multiple rooks
+    
+    // TODO
+    
+    return 0;
+}
+
 uint8_t MovementCalculator::calculateMoves(Move *_moves, bool userToMove)
 {
     numberOfMoves = 0;
@@ -20,6 +55,11 @@ uint8_t MovementCalculator::calculateMoves(Move *_moves, bool userToMove)
     
     if(userToMove)
     {
+//        if(isSquareInCheck(Tile(lsm(board.bitmaps[Board::USER_KING])), !userToMove))
+//        {
+//            return calculateMovesInCheck(userToMove);
+//        }
+        
         if(board.lastMove[0] - board.lastMove[1] == 2)
         {
             if(board.b[board.lastMove[1]] == -1)
@@ -72,6 +112,11 @@ uint8_t MovementCalculator::calculateMoves(Move *_moves, bool userToMove)
     }
     else
     {
+//        if(isSquareInCheck(Tile(lsm(board.bitmaps[Board::CPU_KING])), !userToMove))
+//        {
+//            return calculateMovesInCheck(userToMove);
+//        }
+        
         if(board.lastMove[1] - board.lastMove[0] == 2)
         {
             if(board.b[board.lastMove[1]] == 1)
@@ -133,83 +178,49 @@ void MovementCalculator::pawn(const Tile &tile, bool userToMove, int8_t enPassan
         {
             if(board.b[tile.index + 1] == 0)
             {
-                moves[numberOfMoves].from = tile.index + 200;
-                moves[numberOfMoves].to = tile.index + 1;
-                numberOfMoves++;
-                moves[numberOfMoves].from = tile.index + 300;
-                moves[numberOfMoves].to = tile.index + 1;
-                numberOfMoves++;
-                moves[numberOfMoves].from = tile.index + 400;
-                moves[numberOfMoves].to = tile.index + 1;
-                numberOfMoves++;
-                moves[numberOfMoves].from = tile.index + 500;
-                moves[numberOfMoves].to = tile.index + 1;
-                numberOfMoves++;
+                addMove(tile.index + 200, tile.index + 1);
+                addMove(tile.index + 300, tile.index + 1);
+                addMove(tile.index + 400, tile.index + 1);
+                addMove(tile.index + 500, tile.index + 1);
             }
             if(tile.file != 0 && board.b[tile.index - 7] > 0)
             {
-                moves[numberOfMoves].from = tile.index + 200;
-                moves[numberOfMoves].to = tile.index - 7;
-                numberOfMoves++;
-                moves[numberOfMoves].from = tile.index + 300;
-                moves[numberOfMoves].to = tile.index - 7;
-                numberOfMoves++;
-                moves[numberOfMoves].from = tile.index + 400;
-                moves[numberOfMoves].to = tile.index - 7;
-                numberOfMoves++;
-                moves[numberOfMoves].from = tile.index + 500;
-                moves[numberOfMoves].to = tile.index - 7;
-                numberOfMoves++;
+                addMove(tile.index + 200, tile.index - 7);
+                addMove(tile.index + 300, tile.index - 7);
+                addMove(tile.index + 400, tile.index - 7);
+                addMove(tile.index + 500, tile.index - 7);
             }
             if(tile.file != 7 && board.b[tile.index + 9] > 0)
             {
-                moves[numberOfMoves].from = tile.index + 200;
-                moves[numberOfMoves].to = tile.index + 9;
-                numberOfMoves++;
-                moves[numberOfMoves].from = tile.index + 300;
-                moves[numberOfMoves].to = tile.index + 9;
-                numberOfMoves++;
-                moves[numberOfMoves].from = tile.index + 400;
-                moves[numberOfMoves].to = tile.index + 9;
-                numberOfMoves++;
-                moves[numberOfMoves].from = tile.index + 500;
-                moves[numberOfMoves].to = tile.index + 9;
-                numberOfMoves++;
+                addMove(tile.index + 200, tile.index + 9);
+                addMove(tile.index + 300, tile.index + 9);
+                addMove(tile.index + 400, tile.index + 9);
+                addMove(tile.index + 500, tile.index + 9);
             }
         }
         else
         {
             if(board.b[tile.index + 1] == 0)
             {
-                moves[numberOfMoves].from = tile.index;
-                moves[numberOfMoves].to = tile.index + 1;
-                numberOfMoves++;
+                addMove(tile.index, tile.index + 1);
                 if(tile.rank == 1 && board.b[tile.index + 2] == 0)
                 {
-                    moves[numberOfMoves].from = tile.index;
-                    moves[numberOfMoves].to = tile.index + 2;
-                    numberOfMoves++;
+                    addMove(tile.index, tile.index + 2);
                 }
             }
             if(tile.file != 0 && board.b[tile.index - 7] > 0)
             {
-                moves[numberOfMoves].from = tile.index;
-                moves[numberOfMoves].to = tile.index - 7;
-                numberOfMoves++;
+                addMove(tile.index, tile.index - 7);
             }
             if(tile.file != 7 && board.b[tile.index + 9] > 0)
             {
-                moves[numberOfMoves].from = tile.index;
-                moves[numberOfMoves].to = tile.index + 9;
-                numberOfMoves++;
+                addMove(tile.index, tile.index + 9);
             }
             if(enPassantIndex != -1)
             {
                 if(abs(tile.index - enPassantIndex) < 10)
                 {
-                    moves[numberOfMoves].from = tile.index;
-                    moves[numberOfMoves].to = enPassantIndex + 1;
-                    numberOfMoves++;
+                    addMove(tile.index, enPassantIndex + 1);
                 }
             }
         }
@@ -220,83 +231,49 @@ void MovementCalculator::pawn(const Tile &tile, bool userToMove, int8_t enPassan
         {
             if(board.b[tile.index - 1] == 0)
             {
-                moves[numberOfMoves].from = tile.index + 200;
-                moves[numberOfMoves].to = tile.index - 1;
-                numberOfMoves++;
-                moves[numberOfMoves].from = tile.index + 300;
-                moves[numberOfMoves].to = tile.index - 1;
-                numberOfMoves++;
-                moves[numberOfMoves].from = tile.index + 400;
-                moves[numberOfMoves].to = tile.index - 1;
-                numberOfMoves++;
-                moves[numberOfMoves].from = tile.index + 500;
-                moves[numberOfMoves].to = tile.index - 1;
-                numberOfMoves++;
+                addMove(tile.index + 200, tile.index - 1);
+                addMove(tile.index + 300, tile.index - 1);
+                addMove(tile.index + 400, tile.index - 1);
+                addMove(tile.index + 500, tile.index - 1);
             }
             if(tile.file != 0 && board.b[tile.index - 9] < 0)
             {
-                moves[numberOfMoves].from = tile.index + 200;
-                moves[numberOfMoves].to = tile.index - 9;
-                numberOfMoves++;
-                moves[numberOfMoves].from = tile.index + 300;
-                moves[numberOfMoves].to = tile.index - 9;
-                numberOfMoves++;
-                moves[numberOfMoves].from = tile.index + 400;
-                moves[numberOfMoves].to = tile.index - 9;
-                numberOfMoves++;
-                moves[numberOfMoves].from = tile.index + 500;
-                moves[numberOfMoves].to = tile.index - 9;
-                numberOfMoves++;
+                addMove(tile.index + 200, tile.index - 9);
+                addMove(tile.index + 300, tile.index - 9);
+                addMove(tile.index + 400, tile.index - 9);
+                addMove(tile.index + 500, tile.index - 9);
             }
             if(tile.file != 7 && board.b[tile.index + 7] < 0)
             {
-                moves[numberOfMoves].from = tile.index + 200;
-                moves[numberOfMoves].to = tile.index + 7;
-                numberOfMoves++;
-                moves[numberOfMoves].from = tile.index + 200;
-                moves[numberOfMoves].to = tile.index + 7;
-                numberOfMoves++;
-                moves[numberOfMoves].from = tile.index + 200;
-                moves[numberOfMoves].to = tile.index + 7;
-                numberOfMoves++;
-                moves[numberOfMoves].from = tile.index + 200;
-                moves[numberOfMoves].to = tile.index + 7;
-                numberOfMoves++;
+                addMove(tile.index + 200, tile.index + 7);
+                addMove(tile.index + 300, tile.index + 7);
+                addMove(tile.index + 400, tile.index + 7);
+                addMove(tile.index + 500, tile.index + 7);
             }
         }
         else
         {
             if(board.b[tile.index - 1] == 0)
             {
-                moves[numberOfMoves].from = tile.index;
-                moves[numberOfMoves].to = tile.index - 1;
-                numberOfMoves++;
+                addMove(tile.index, tile.index - 1);
                 if(tile.rank == 6 && board.b[tile.index - 2] == 0)
                 {
-                    moves[numberOfMoves].from = tile.index;
-                    moves[numberOfMoves].to = tile.index - 2;
-                    numberOfMoves++;
+                    addMove(tile.index, tile.index - 2);
                 }
             }
             if(tile.file != 0 && board.b[tile.index - 9] < 0)
             {
-                moves[numberOfMoves].from = tile.index;
-                moves[numberOfMoves].to = tile.index - 9;
-                numberOfMoves++;
+                addMove(tile.index, tile.index - 9);
             }
             if(tile.file != 7 && board.b[tile.index + 7] < 0)
             {
-                moves[numberOfMoves].from = tile.index;
-                moves[numberOfMoves].to = tile.index + 7;
-                numberOfMoves++;
+                addMove(tile.index, tile.index + 7);
             }
             if(enPassantIndex != -1)
             {
                 if(abs(tile.index - enPassantIndex) < 10)
                 {
-                    moves[numberOfMoves].from = tile.index;
-                    moves[numberOfMoves].to = enPassantIndex - 1;
-                    numberOfMoves++;
+                    addMove(tile.index, enPassantIndex - 1);
                 }
             }
         }
@@ -314,13 +291,9 @@ void MovementCalculator::knight(const Tile &tile, bool userToMove)
     {
         to64 &= ~board.cpu;
     }
-    uint8_t to;
     while(to64 != 0)
     {
-        to = decrementBitboard(to64);
-        moves[numberOfMoves].from = tile.index;
-        moves[numberOfMoves].to = to;
-        numberOfMoves++;
+        addMove(tile.index, decrementBitboard(to64));
     }
 }
 
@@ -335,17 +308,13 @@ void MovementCalculator::bishop(const Tile& tile, bool userToMove)
         index -= 7;
         if(board.b[index] == 0)
         {
-            moves[numberOfMoves].from = tile.index;
-            moves[numberOfMoves].to = index;
-            numberOfMoves++;
+            addMove(tile.index, index);
         }
         else
         {
             if((board.b[index] < 0) != userToMove)
             {
-                moves[numberOfMoves].from = tile.index;
-                moves[numberOfMoves].to = index;
-                numberOfMoves++;
+                addMove(tile.index, index);
             }
             break;
         }
@@ -358,17 +327,13 @@ void MovementCalculator::bishop(const Tile& tile, bool userToMove)
         index -= 9;
         if(board.b[index] == 0)
         {
-            moves[numberOfMoves].from = tile.index;
-            moves[numberOfMoves].to = index;
-            numberOfMoves++;
+            addMove(tile.index, index);
         }
         else
         {
             if((board.b[index] < 0) != userToMove)
             {
-                moves[numberOfMoves].from = tile.index;
-                moves[numberOfMoves].to = index;
-                numberOfMoves++;
+                addMove(tile.index, index);
             }
             break;
         }
@@ -381,17 +346,13 @@ void MovementCalculator::bishop(const Tile& tile, bool userToMove)
         index += 9;
         if(board.b[index] == 0)
         {
-            moves[numberOfMoves].from = tile.index;
-            moves[numberOfMoves].to = index;
-            numberOfMoves++;
+            addMove(tile.index, index);
         }
         else
         {
             if((board.b[index] < 0) != userToMove)
             {
-                moves[numberOfMoves].from = tile.index;
-                moves[numberOfMoves].to = index;
-                numberOfMoves++;
+                addMove(tile.index, index);
             }
             break;
         }
@@ -404,17 +365,13 @@ void MovementCalculator::bishop(const Tile& tile, bool userToMove)
         index += 7;
         if(board.b[index] == 0)
         {
-            moves[numberOfMoves].from = tile.index;
-            moves[numberOfMoves].to = index;
-            numberOfMoves++;
+            addMove(tile.index, index);
         }
         else
         {
             if((board.b[index] < 0) != userToMove)
             {
-                moves[numberOfMoves].from = tile.index;
-                moves[numberOfMoves].to = index;
-                numberOfMoves++;
+                addMove(tile.index, index);
             }
             break;
         }
@@ -430,17 +387,13 @@ void MovementCalculator::rook(const Tile& tile, bool userToMove)
         index += 1;
         if(board.b[index] == 0)
         {
-            moves[numberOfMoves].from = tile.index;
-            moves[numberOfMoves].to = index;
-            numberOfMoves++;
+            addMove(tile.index, index);
         }
         else
         {
             if((board.b[index] < 0) != userToMove)
             {
-                moves[numberOfMoves].from = tile.index;
-                moves[numberOfMoves].to = index;
-                numberOfMoves++;
+                addMove(tile.index, index);
             }
             break;
         }
@@ -451,17 +404,13 @@ void MovementCalculator::rook(const Tile& tile, bool userToMove)
         index -= 1;
         if(board.b[index] == 0)
         {
-            moves[numberOfMoves].from = tile.index;
-            moves[numberOfMoves].to = index;
-            numberOfMoves++;
+            addMove(tile.index, index);
         }
         else
         {
             if((board.b[index] < 0) != userToMove)
             {
-                moves[numberOfMoves].from = tile.index;
-                moves[numberOfMoves].to = index;
-                numberOfMoves++;
+                addMove(tile.index, index);
             }
             break;
         }
@@ -472,17 +421,13 @@ void MovementCalculator::rook(const Tile& tile, bool userToMove)
         index += 8;
         if(board.b[index] == 0)
         {
-            moves[numberOfMoves].from = tile.index;
-            moves[numberOfMoves].to = index;
-            numberOfMoves++;
+            addMove(tile.index, index);
         }
         else
         {
             if((board.b[index] < 0) != userToMove)
             {
-                moves[numberOfMoves].from = tile.index;
-                moves[numberOfMoves].to = index;
-                numberOfMoves++;
+                addMove(tile.index, index);
             }
             break;
         }
@@ -493,17 +438,13 @@ void MovementCalculator::rook(const Tile& tile, bool userToMove)
         index -= 8;
         if(board.b[index] == 0)
         {
-            moves[numberOfMoves].from = tile.index;
-            moves[numberOfMoves].to = index;
-            numberOfMoves++;
+            addMove(tile.index, index);
         }
         else
         {
             if((board.b[index] < 0) != userToMove)
             {
-                moves[numberOfMoves].from = tile.index;
-                moves[numberOfMoves].to = index;
-                numberOfMoves++;
+                addMove(tile.index, index);
             }
             break;
         }
@@ -531,9 +472,7 @@ void MovementCalculator::king(const Tile& tile, bool userToMove)
                 // queen-side
                 if(!isSquareInCheck(Tile(8), !userToMove) && !isSquareInCheck(Tile(16), !userToMove) && !!isSquareInCheck(Tile(24), !userToMove))
                 {
-                    moves[numberOfMoves].from = 32;
-                    moves[numberOfMoves].to = 16;
-                    numberOfMoves++;
+                    addMove(32, 16);
                 }
             }
             if(board.castling[3] && board.b[48] == 0 && board.b[40] == 0)
@@ -541,9 +480,7 @@ void MovementCalculator::king(const Tile& tile, bool userToMove)
                 // king-side
                 if(!isSquareInCheck(Tile(40), !userToMove) && !isSquareInCheck(Tile(48), !userToMove))
                 {
-                    moves[numberOfMoves].from = 32;
-                    moves[numberOfMoves].to = 48;
-                    numberOfMoves++;
+                    addMove(32, 48);
                 }
             }
         }
@@ -561,9 +498,7 @@ void MovementCalculator::king(const Tile& tile, bool userToMove)
                 // queen-side
                 if(!isSquareInCheck(Tile(15), !userToMove) && !isSquareInCheck(Tile(23), !userToMove) && !isSquareInCheck(Tile(31), !userToMove))
                 {
-                    moves[numberOfMoves].from = 39;
-                    moves[numberOfMoves].to = 23;
-                    numberOfMoves++;
+                    addMove(39, 23);
                 }
             }
             if(board.castling[1] && board.b[55] == 0 && board.b[47] == 0)
@@ -571,9 +506,7 @@ void MovementCalculator::king(const Tile& tile, bool userToMove)
                 // king-side
                 if(!isSquareInCheck(Tile(47), !userToMove) && !isSquareInCheck(Tile(55), !userToMove))
                 {
-                    moves[numberOfMoves].from = 39;
-                    moves[numberOfMoves].to = 55;
-                    numberOfMoves++;
+                    addMove(39, 55);
                 }
             }
         }
@@ -587,13 +520,9 @@ void MovementCalculator::king(const Tile& tile, bool userToMove)
     {
         to64 &= ~board.cpu;
     }
-    uint8_t to;
     while(to64 != 0)
     {
-        to = decrementBitboard(to64);
-        moves[numberOfMoves].from = tile.index;
-        moves[numberOfMoves].to = to;
-        numberOfMoves++;
+        addMove(tile.index, decrementBitboard(to64));
     }
 }
 

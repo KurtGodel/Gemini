@@ -36,15 +36,26 @@ void Game::newGame()
     // These two lines of code are overwritten by the convertFenToBoard block of code. They serve not as a functional purpose, but as a reminder of where to edit a board's individual squares numerically
     
     char arr[71] = {
-        -4, -1, 0,  0,  0,  0,  1,  4,
-        -2, -1, 0,  0,  0,  0,  1,  2,
-        -3, -1, 0,  0,  0,  0,  1,  3,
-        -5, -1, 0,  0,  0,  0,  1,  5,
-        -6, -1, 0,  0,  0,  0,  1,  6,
-        -3, -1, 0,  0,  0,  0,  1,  3,
-        -2, -1, 0,  0,  0,  0,  1,  2,
-        -4, -1, 0,  0,  0,  0,  1,  4,
+        -4, -1,  0,  0,  0,  0,  1,  4,
+        -2, -1,  0,  0,  0,  0,  1,  2,
+        -3, -1,  0,  0,  0,  0,  1,  3,
+        -5, -1,  0,  0,  0,  0,  1,  5,
+        -6, -1,  0,  0,  0,  0,  1,  6,
+        -3, -1,  0,  0,  0,  0,  1,  3,
+        -2, -1,  0,  0,  0,  0,  1,  2,
+        -4, -1,  0,  0,  0,  0,  1,  4,
         1,1,1,1,0,0,0};
+
+//    char arr[71] = {
+//        -4, -1,  0,  0,  0,  0,  1,  4,
+//        -2,  0,  0,  0,  0,  0,  1,  0,
+//        -3,  0, -1, -3,  0,  2,  1,  3,
+//        -5, -1,  0,  0,  0,  0,  1,  5,
+//        -6,  0,  0, -1,  1,  0,  3,  6,
+//         0, -1, -2,  0,  0,  0,  1,  0,
+//         0, -1,  0,  0,  0,  0,  1,  2,
+//        -4, -1,  0,  0,  0,  0,  1,  4,
+//         1,  1,  1,  1,  0,  0,  0};
     
     board.set(arr);
     
@@ -324,9 +335,7 @@ void Game::frame(sf::RenderWindow* window, sf::Vector2f pos, float size, sf::Vec
     while(!gameAiCommunicator->lock.try_lock()) {}
     if(!gameAiCommunicator->shouldAiBeRunning && turn == 1)
     {
-        Move m;
-        m.from = gameAiCommunicator->from;
-        m.to = gameAiCommunicator->to;
+        Move m(gameAiCommunicator->from, gameAiCommunicator->to);
         makeAIMove(m);
         turn *= -1;
     }

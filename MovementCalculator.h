@@ -25,7 +25,7 @@ public:
     MovementCalculator(const Board& board) : board(board) {};
     uint8_t calculateMoves(Move* moves, bool userToMove);
 private:
-    const Board& board;
+    Board board;
     Move* moves;
     bool userToMove;
     uint8_t numberOfMoves;
@@ -53,6 +53,10 @@ private:
     uint8_t decrementBitboard(uint64_t& input) const;
     
     bool isSquareInCheck(Tile tile, bool userToMove);
+    
+    uint8_t calculateMovesInCheck(bool userToMove);
+    
+    void addMove(uint16_t from, uint16_t to);
     
     const uint64_t knightMovement[64] =
     {
