@@ -4104,7 +4104,7 @@ void Game::writeToCommunicator()
     gameAiCommunicator->cpuTimeLeft = cpuTimeLeft;
     gameAiCommunicator->isAIBlack = !aiWhite;
     
-    gameAiCommunicator->useOpeningBook = false;             // keep true until future notice
+    gameAiCommunicator->useOpeningBook = true;              // keep true until future notice
     gameAiCommunicator->useLateMoveReductions = true;       // keep true until future notice
     gameAiCommunicator->useNullMove = true;                 // keep true until future notice
     
