@@ -134,12 +134,12 @@ private:
         31, 56, 75, 89, 89, 75, 56, 31,
         0,  31, 56, 75, 75, 56, 31, 0
     };
-    int queenPawnsBackBeforeCastlingBonus = 48;
-    int queenPawnsSecondBackBeforeCastlingBonus = 16;
-    int kingPawnsBackBeforeCastlingBonus = 60;
-    int kingPawnsSecondBackBeforeCastlingBonus = 16;
-    int queenEmptyBeforeCastling = 12;
-    int kingEmptyBeforeCastling = 16;
+    int queenPawnsBackBeforeCastlingBonus = 72;
+    int queenPawnsSecondBackBeforeCastlingBonus = 24;
+    int kingPawnsBackBeforeCastlingBonus = 90;
+    int kingPawnsSecondBackBeforeCastlingBonus = 24;
+    int queenEmptyBeforeCastling = 18;
+    int kingEmptyBeforeCastling = 24;
     
     int pawnsBackRankAfterCastling = 150;
     int pawnsSecondBackRankAfterCastling = 48;

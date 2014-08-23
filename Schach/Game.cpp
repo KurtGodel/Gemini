@@ -362,6 +362,8 @@ void Game::frame(sf::RenderWindow* window, sf::Vector2f pos, float size, sf::Vec
         renderGreen(window);
         renderPieces(window);
     }
+    
+    renderPrincipleLine(window);
 }
 
 bool Game::checkForThreeTimeDraw()
@@ -4102,7 +4104,7 @@ void Game::writeToCommunicator()
     gameAiCommunicator->cpuTimeLeft = cpuTimeLeft;
     gameAiCommunicator->isAIBlack = !aiWhite;
     
-    gameAiCommunicator->useOpeningBook = true;              // keep true until future notice
+    gameAiCommunicator->useOpeningBook = false;             // keep true until future notice
     gameAiCommunicator->useLateMoveReductions = true;       // keep true until future notice
     gameAiCommunicator->useNullMove = true;                 // keep true until future notice
     
@@ -4386,5 +4388,77 @@ void Game::renderPieces(sf::RenderWindow* window)
                 }
             }
         }
+    }
+}
+
+void Game::renderPrincipleLine(sf::RenderWindow* window)
+{
+    std::vector < std::string > principleLine;
+    bool principleLineBasedOnOpeningBook;
+    while(gameAiCommunicator->lock.try_lock());
+    for(int i=0; i<gameAiCommunicator->principleLine.size(); i++)
+    {
+        principleLine.push_back(gameAiCommunicator->principleLine[i]);
+    }
+    principleLineBasedOnOpeningBook = gameAiCommunicator->principleLineBasedOnOpeningBook;
+    gameAiCommunicator->lock.unlock();
+    
+    if(principleLineBasedOnOpeningBook)
+    {
+        std::string str = "";
+        for(int i=0; i<principleLine.size(); i++)
+        {
+            str += principleLine[i] + "\n";
+        }
+        sf::Text text(str, spriteHolder->font, 20);
+        text.setScale(1.0, 1.0);
+        text.setColor(sf::Color(0, 255, 0));
+        text.setPosition(600, 100);
+        window->draw(text);
+    }
+    else
+    {
+        std::string str = "";
+        int maxNumberOfMoves = 4;   // moves - not ply!
+        
+        if(aiWhite)
+        {
+            str += "1. ";
+        }
+        else
+        {
+            for(int i=0; i<maxNumberOfMoves; i++)
+            {
+                if(2*i < principleLine.size())
+                {
+                    str += principleLine[2*i];
+                    str += " ";
+                }
+                else
+                {
+                    break;
+                }
+                
+                
+                if(2*i+1 < principleLine.size())
+                {
+                    str += "\n";
+                    str += std::to_string(i+2);
+                    str += ". ";
+                    str += principleLine[2*i+1];
+                    str += " ";
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        
+        sf::Text text(str, spriteHolder->font, 20);
+        text.setScale(1.0, 1.0);
+        text.setColor(sf::Color(0, 255, 0));
+        text.setPosition(600, 100);
+        window->draw(text);
     }
 }

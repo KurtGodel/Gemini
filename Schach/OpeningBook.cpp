@@ -1425,3 +1425,66 @@ int OpeningBook::searchRandom(Board* b)
     }
     return -1;
 }
+
+void OpeningBook::setPrincipleLine(Board* b, std::vector < int > * vect)
+{
+    char arr[64] = {
+        -4, -1, 0, 0, 0, 0, 1, 4,
+        -2, -1, 0, 0, 0, 0, 1, 2,
+        -3, -1, 0, 0, 0, 0, 1, 3,
+        -5, -1, 0, 0, 0, 0, 1, 5,
+        -6, -1, 0, 0, 0, 0, 1, 6,
+        -3, -1, 0, 0, 0, 0, 1, 3,
+        -2, -1, 0, 0, 0, 0, 1, 2,
+        -4, -1, 0, 0, 0, 0, 1, 4,
+    };
+    
+    int openingBoard = true;
+    for(int i=0; i<64; i++)
+    {
+        if(b->b[i] != arr[i])
+        {
+            openingBoard = false;
+            break;
+        }
+    }
+    for(int i=0; i<4; i++)
+    {
+        if(b->castling[0] != 1)
+        {
+            openingBoard = false;
+            break;
+        }
+    }
+    if(b->fiftyMoveDrawCounter != 0)
+    {
+        openingBoard = false;
+    }
+    
+    if(openingBoard)
+    {
+        // opening position
+        return;
+    }
+    
+    OpeningMove hash = search(b);
+    if(hash.move.size()==0)
+    {
+        return;
+    }
+    int i;
+    int sum = 0;
+    for(i=0; i<hash.move.size(); i+=3)
+    {
+        sum += hash.move[i+2];
+    }
+    int threshold = minPercentThreshold*sum;
+    vect->clear();
+    for(i=0; i<hash.move.size(); i+=3)
+    {
+        if(hash.move[i+2] > threshold)
+        {
+            vect->push_back(100*hash.move[i]+hash.move[i+1]);
+        }
+    }
+}

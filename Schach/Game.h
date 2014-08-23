@@ -36,6 +36,7 @@ public:
 private:
     MoveConverter moveConverter;
     void switchSides();
+    void renderPrincipleLine(sf::RenderWindow* window);
     void runAI();
     void undoMove();
     bool checkForThreeTimeDraw();

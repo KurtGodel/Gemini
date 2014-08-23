@@ -33,6 +33,11 @@ public:
     bool useNullMove = true;
     bool useLateMoveReductions = true;
     bool useOpeningBook = true;
+    
+    // other info
+    std::vector < std::string > principleLine;
+    bool principleLineBasedOnOpeningBook = false;
+    bool isWindowClosing = false;
 };
 
 #endif /* defined(__Schach__RunAIInput__) */

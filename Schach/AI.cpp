@@ -196,6 +196,21 @@ void AI::run()
                             gameAiCommunicator->from = from;
                             gameAiCommunicator->to = to;
                             gameAiCommunicator->shouldAiBeRunning = false;
+                            gameAiCommunicator->principleLineBasedOnOpeningBook = true;
+                            std::vector <int> possibleMoves;
+                            openingBook.setPrincipleLine(&board, &possibleMoves);
+                            gameAiCommunicator->principleLine.clear();
+                            for(int i=0; i<possibleMoves.size(); i++)
+                            {
+                                if(gameAiCommunicator->isAIBlack)
+                                {
+                                    gameAiCommunicator->principleLine.push_back(moveConverter.convertMoveToString(&board, possibleMoves[i]/100, possibleMoves[i]%100, 1));
+                                }
+                                else
+                                {
+                                    gameAiCommunicator->principleLine.push_back(moveConverter.convertMoveToString(&board, possibleMoves[i]/100, possibleMoves[i]%100, 0));
+                                }
+                            }
                             gameAiCommunicator->lock.unlock();
                             return;
                         }
@@ -258,6 +273,13 @@ void AI::run()
                 std::cout << numberOfEvals << "==" << powf(numberOfEvals, 1/currentSearchDepth) << "\n\n";
                 if(gameAiCommunicator->shouldAiBeRunning)
                 {
+                    // last search was not interrupted
+                    gameAiCommunicator->principleLine.clear();
+                    for(int i=0; i<principleLine.size(); i++)
+                    {
+                        gameAiCommunicator->principleLine.push_back(principleLine[i]);
+                    }
+                    gameAiCommunicator->principleLineBasedOnOpeningBook = false;
                     gameAiCommunicator->from = bestMove/100;
                     gameAiCommunicator->to = bestMove%100;
                 }
@@ -266,6 +288,12 @@ void AI::run()
             else if(gameAiCommunicator->shouldAiBeRunning)
             {
                 // last search was not interrupted
+                gameAiCommunicator->principleLine.clear();
+                for(int i=0; i<principleLine.size(); i++)
+                {
+                    gameAiCommunicator->principleLine.push_back(principleLine[i]);
+                }
+                gameAiCommunicator->principleLineBasedOnOpeningBook = false;
                 gameAiCommunicator->from = bestMove/100;
                 gameAiCommunicator->to = bestMove%100;
             }
@@ -473,17 +501,60 @@ int AI::alphaBetaTree(int layer, float depthLeft, int alpha, int beta, int endOf
             }
         }
         
+        
+        bool skipFirstMove = false;
+        
+        if(hash != nullptr)
+        {
+            if(hash->bestMove != -1)
+            {
+                skipFirstMove = true;
+                Move m;
+                m.from = hash->bestMove/100;
+                m.to = hash->bestMove%100;
+                bonusDepth = getExtension(layer, m, depthLeft, inCheck, 0);
+                value = -1*alphaBetaMakeMove(m, layer+1, depthLeft+bonusDepth-1, -1*beta, -1*alpha);
+                
+                if(value > score)
+                {
+                    score = value;
+                    item = 500*layer;
+                }
+                if(score > alpha)
+                {
+                    alpha = score;
+                }
+                if(alpha >= beta)
+                {
+                    killer[layer][1] = killer[layer][0];
+                    killer[layer][0] = m.from*100+m.to;
+                    addElementToTranspositionTable(100*m.from+m.to, alpha, beta, depthLeft, false);
+                    return alpha;
+                }
+            }
+        }
+        
         orderMoves(layer, hash, depthLeft, alpha, beta);
         
         for(i=500*layer; i<moveLength[layer]; i++)
         {
+            if(i == 500*layer && skipFirstMove)
+            {
+                continue;
+            }
             bonusDepth = getExtension(layer, move[moveOrder[i]], depthLeft, inCheck, i-500*layer);
             value = -1*alphaBetaMakeMove(move[moveOrder[i]], layer+1, depthLeft+bonusDepth-1, -1*beta, -1*alpha);
+            
+            if(attemptedLateMoveReduction[layer] != 0 && value > score)
+            {
+                // this is a PV-node! re-search this line at full depth
+                value = -1*alphaBetaMakeMove(move[moveOrder[i]], layer+1, depthLeft+bonusDepth-1-attemptedLateMoveReduction[layer], -1*beta, -1*alpha);
+            }
             
             if(value > score)
             {
                 score = value;
-                item = moveOrder[i];
+                item = i;
             }
             if(score > alpha)
             {
@@ -498,11 +569,11 @@ int AI::alphaBetaTree(int layer, float depthLeft, int alpha, int beta, int endOf
         }
         if(i == moveLength[layer])
         {
-            addElementToTranspositionTable(100*move[item].from+move[item].to, alpha, beta, depthLeft, true);
+            addElementToTranspositionTable(100*move[moveOrder[item]].from+move[moveOrder[item]].to, alpha, beta, depthLeft, true);
         }
         else
         {
-            addElementToTranspositionTable(100*move[item].from+move[item].to, alpha, beta, depthLeft, false);
+            addElementToTranspositionTable(100*move[moveOrder[item]].from+move[moveOrder[item]].to, alpha, beta, depthLeft, false);
         }
         return alpha;
     }
@@ -574,11 +645,50 @@ int AI::alphaBetaTree(int layer, float depthLeft, int alpha, int beta, int endOf
             }
         }
         
-        orderMoves(layer, hash, depthLeft, alpha, beta);
         float bonusDepth;
+        bool skipFirstMove = false;
+        
+        if(hash != nullptr)
+        {
+            if(hash->bestMove != -1)
+            {
+                
+                Move m;
+                m.from = hash->bestMove/100;
+                m.to = hash->bestMove%100;
+                
+                
+                skipFirstMove = true;
+                bonusDepth = getExtension(layer, m, depthLeft, inCheck, 0);
+                value = -1*alphaBetaMakeMove(m, layer+1, depthLeft+bonusDepth-1, -1*beta, -1*alpha);
+                
+                if(value > score)
+                {
+                    score = value;
+                    item = 500*layer;
+                }
+                if(score > alpha)
+                {
+                    alpha = score;
+                }
+                if(alpha >= beta)
+                {
+                    killer[layer][1] = killer[layer][0];
+                    killer[layer][0] = m.from*100+m.to;
+                    addElementToTranspositionTable(100*m.from+m.to, alpha, beta, depthLeft, false);
+                    return alpha;
+                }
+            }
+        }
+        
+        orderMoves(layer, hash, depthLeft, alpha, beta);
         
         for(i=500*layer; i<moveLength[layer]; i++)
         {
+            if(i == 500*layer && skipFirstMove)
+            {
+                continue;
+            }
             bonusDepth = getExtension(layer, move[moveOrder[i]], depthLeft, inCheck, i-500*layer);
             value = -1*alphaBetaMakeMove(move[moveOrder[i]], layer+1, depthLeft+bonusDepth-1, -1*beta, -1*alpha);
             
@@ -591,7 +701,7 @@ int AI::alphaBetaTree(int layer, float depthLeft, int alpha, int beta, int endOf
             if(value > score)
             {
                 score = value;
-                item = moveOrder[i];
+                item = i;
             }
             if(score > alpha)
             {
@@ -607,13 +717,12 @@ int AI::alphaBetaTree(int layer, float depthLeft, int alpha, int beta, int endOf
         
         if(i == moveLength[layer])
         {
-            addElementToTranspositionTable(100*move[item].from+move[item].to, alpha, beta, depthLeft, true);
+            addElementToTranspositionTable(100*move[moveOrder[item]].from+move[moveOrder[item]].to, alpha, beta, depthLeft, true);
         }
         else
         {
-            addElementToTranspositionTable(100*move[item].from+move[item].to, alpha, beta, depthLeft, false);
+            addElementToTranspositionTable(100*move[moveOrder[item]].from+move[moveOrder[item]].to, alpha, beta, depthLeft, false);
         }
-        
         return alpha;
     }
 }
@@ -678,7 +787,7 @@ void AI::orderMoves(int layer, Node* hash, float depthLeft, int alpha, int beta)
                 }
                 else
                 {
-                    evalOrder[i] = -1*evaluator.pieceToValue(board.b[move[i].to]) - evaluator.pieceToValue(board.b[move[i].from]);
+                    evalOrder[i] = (-1*evaluator.pieceToValue(board.b[move[i].to]) - evaluator.pieceToValue(board.b[move[i].from])) / 1000;
                     if(evalOrder[i] > 0)
                     {
                         // good captures
@@ -734,7 +843,7 @@ void AI::orderMoves(int layer, Node* hash, float depthLeft, int alpha, int beta)
                 }
                 else
                 {
-                    evalOrder[i] = evaluator.pieceToValue(board.b[move[i].to]) + evaluator.pieceToValue(board.b[move[i].from]);
+                    evalOrder[i] = (evaluator.pieceToValue(board.b[move[i].to]) + evaluator.pieceToValue(board.b[move[i].from])) / 1000;
                     if(evalOrder[i] > 0)
                     {
                         // good capture

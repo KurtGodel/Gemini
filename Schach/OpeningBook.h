@@ -22,6 +22,7 @@ class OpeningBook
 public:
     OpeningBook();
     int searchRandom(Board* b);
+    void setPrincipleLine(Board* b, std::vector < int > * vect);
 private:
     OpeningMove search(Board* b);
     int getRandomOpeningMove();
@@ -36,7 +37,7 @@ private:
     void switchSides();
     
     int minThreshold = 10;
-    int minPercentThreshold = 0.0225;
+    float minPercentThreshold = 0.0225;
     
     std::unordered_map<uint64_t, OpeningMove> table;
     Board board;

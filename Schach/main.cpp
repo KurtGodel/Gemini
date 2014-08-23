@@ -29,7 +29,15 @@ void* startAI(void* input)
     while(true)
     {
         ai.run();
+        while(((RunAIInput*)input)->lock.try_lock()){};
+        if(((RunAIInput*)input)->isWindowClosing)
+        {
+            ((RunAIInput*)input)->lock.unlock();
+            break;
+        }
+        ((RunAIInput*)input)->lock.unlock();
     }
+    return input;
 }
 
 int numberOfEvals = 0;
@@ -100,6 +108,7 @@ int main(int, char const**)
                     // Escape pressed : exit
                     while(input.lock.try_lock()){}
                     input.shouldAiBeRunning = false;
+                    input.isWindowClosing = true;
                     input.lock.unlock();
                     struct timespec tim, tim2;
                     tim.tv_sec = 0;

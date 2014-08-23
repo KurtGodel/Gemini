@@ -133,10 +133,10 @@ void Controller::frame(sf::RenderWindow* window)
     sf::Text text("", spriteHolder.font, boardSize/20);
     text.setColor(sf::Color(255, 0, 0));
     text.setString(timeToString(game.cpuTimeLeft));
-    text.setPosition(650, 200);
+    text.setPosition(650, 250);
     window->draw(text);
     text.setString(timeToString(game.humanTimeLeft));
-    text.setPosition(650, 400);
+    text.setPosition(650, 350);
     window->draw(text);
     
     spriteHolder.preferencesSprite.setScale(preferencesMenu.buttonWidth/512, preferencesMenu.buttonHeight/512);
