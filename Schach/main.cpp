@@ -115,7 +115,7 @@ int main(int, char const**)
                     tim.tv_nsec = 10;      // milliseconds
                     tim.tv_nsec *= 1000000;
                     nanosleep(&tim , &tim2);
-
+                    input.lock.unlock();
                     window.close();
                 }
                 else if(event.key.code == sf::Keyboard::LSystem)
