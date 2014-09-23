@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		280A44E819BE5464004F4588 /* _Opening Book.txt in Resources */ = {isa = PBXBuildFile; fileRef = 280A44E719BE5464004F4588 /* _Opening Book.txt */; };
 		281CCC84196F112C00CDF049 /* PreferencesMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 281CCC82196F112C00CDF049 /* PreferencesMenu.cpp */; };
 		28327E04196D8EF7004D6464 /* Evaluator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28327E00196D8EF7004D6464 /* Evaluator.cpp */; };
 		285BDFE81971AD7500597698 /* BlackBishop.png in Resources */ = {isa = PBXBuildFile; fileRef = 285BDFDA1971AD7500597698 /* BlackBishop.png */; };
@@ -44,14 +45,14 @@
 		28D2D2D4196C7BDB00C4E9A6 /* Piece.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D2D2D2196C7BDB00C4E9A6 /* Piece.cpp */; };
 		28E47BDB196DA39500107E27 /* EndGameMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E47BD9196DA39500107E27 /* EndGameMenu.cpp */; };
 		28E47BE0196DBAEB00107E27 /* AI_Support.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E47BDE196DBAEB00107E27 /* AI_Support.cpp */; };
+		28F2582C19B1256A00883D78 /* MovementCalculator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F2582819B1256A00883D78 /* MovementCalculator.cpp */; };
 		28FCAB961975C7E700FBD2FF /* ExchangeSimulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28FCAB941975C7E700FBD2FF /* ExchangeSimulator.cpp */; };
-		5122FF231997BA63001612B0 /* MovementCalculator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5122FF211997BA63001612B0 /* MovementCalculator.cpp */; };
 		51967403196CBCDD0072D6B1 /* OpeningMove.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 51967402196CBCDD0072D6B1 /* OpeningMove.cpp */; };
 		51967406196CBCE50072D6B1 /* OpeningBook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 51967404196CBCE50072D6B1 /* OpeningBook.cpp */; };
-		51967408196CBD1D0072D6B1 /* _Opening Book.txt in Resources */ = {isa = PBXBuildFile; fileRef = 51967407196CBD1D0072D6B1 /* _Opening Book.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		280A44E719BE5464004F4588 /* _Opening Book.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "_Opening Book.txt"; path = "Schach/_Opening Book.txt"; sourceTree = "<group>"; };
 		281CCC82196F112C00CDF049 /* PreferencesMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PreferencesMenu.cpp; sourceTree = "<group>"; };
 		281CCC83196F112C00CDF049 /* PreferencesMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesMenu.h; sourceTree = "<group>"; };
 		28327E00196D8EF7004D6464 /* Evaluator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Evaluator.cpp; sourceTree = "<group>"; };
@@ -108,19 +109,18 @@
 		28E47BD9196DA39500107E27 /* EndGameMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EndGameMenu.cpp; sourceTree = "<group>"; };
 		28E47BDA196DA39500107E27 /* EndGameMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EndGameMenu.h; sourceTree = "<group>"; };
 		28E47BDE196DBAEB00107E27 /* AI_Support.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AI_Support.cpp; sourceTree = "<group>"; };
+		28F2582719B1256A00883D78 /* Move.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Move.h; sourceTree = "<group>"; };
+		28F2582819B1256A00883D78 /* MovementCalculator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MovementCalculator.cpp; sourceTree = "<group>"; };
+		28F2582919B1256A00883D78 /* MovementCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovementCalculator.h; sourceTree = "<group>"; };
+		28F2582A19B1256A00883D78 /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
 		28FCAB941975C7E700FBD2FF /* ExchangeSimulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExchangeSimulator.cpp; sourceTree = "<group>"; };
 		28FCAB951975C7E700FBD2FF /* ExchangeSimulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExchangeSimulator.h; sourceTree = "<group>"; };
-		5122FF211997BA63001612B0 /* MovementCalculator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MovementCalculator.cpp; path = ../MovementCalculator.cpp; sourceTree = "<group>"; };
-		5122FF221997BA63001612B0 /* MovementCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MovementCalculator.h; path = ../MovementCalculator.h; sourceTree = "<group>"; };
-		5122FF251997BB1D001612B0 /* Move.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Move.h; path = ../Move.h; sourceTree = "<group>"; };
 		517846AB196DAEF400D73405 /* PieceConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PieceConstants.h; sourceTree = "<group>"; };
 		518B50CD196C92E700F534A4 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
 		51967401196CBCDD0072D6B1 /* OpeningBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpeningBook.h; sourceTree = "<group>"; };
 		51967402196CBCDD0072D6B1 /* OpeningMove.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpeningMove.cpp; sourceTree = "<group>"; };
 		51967404196CBCE50072D6B1 /* OpeningBook.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpeningBook.cpp; sourceTree = "<group>"; };
 		51967405196CBCE50072D6B1 /* OpeningMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpeningMove.h; sourceTree = "<group>"; };
-		51967407196CBD1D0072D6B1 /* _Opening Book.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "_Opening Book.txt"; sourceTree = "<group>"; };
-		51ABB1B4199AFAB8004C093A /* Tile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Tile.h; path = ../Tile.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +195,7 @@
 		28D2D2A4196C750600C4E9A6 = {
 			isa = PBXGroup;
 			children = (
+				280A44E719BE5464004F4588 /* _Opening Book.txt */,
 				28D2D2B0196C750600C4E9A6 /* Schach */,
 				28D2D2AF196C750600C4E9A6 /* Products */,
 			);
@@ -238,7 +239,6 @@
 				285BDFE01971AD7500597698 /* Board.png */,
 				28C5B03D197EFA4D0093A08C /* preferencesIcon.png */,
 				28C5838A196F21D900D538AD /* _Preferences.txt */,
-				51967407196CBD1D0072D6B1 /* _Opening Book.txt */,
 				28D2D2BD196C750600C4E9A6 /* sansation.ttf */,
 				28D2D2BF196C750600C4E9A6 /* icon.png */,
 			);
@@ -257,7 +257,7 @@
 				28FCAB941975C7E700FBD2FF /* ExchangeSimulator.cpp */,
 				28C86E2E197DBA4D008E8D8E /* HashTable.cpp */,
 				286B42A71976072A001F16D3 /* MoveConverter.cpp */,
-				5122FF211997BA63001612B0 /* MovementCalculator.cpp */,
+				28F2582819B1256A00883D78 /* MovementCalculator.cpp */,
 				51967404196CBCE50072D6B1 /* OpeningBook.cpp */,
 				51967402196CBCDD0072D6B1 /* OpeningMove.cpp */,
 				28B386E6196DED720083ED7E /* RunAIInput.cpp */,
@@ -269,18 +269,18 @@
 		518B50CB196C924900F534A4 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				28F2582A19B1256A00883D78 /* Tile.h */,
 				28855A0F196C94C3005DC12D /* AI.h */,
 				28D2D2CA196C754000C4E9A6 /* Board.h */,
-				51ABB1B4199AFAB8004C093A /* Tile.h */,
 				517846AB196DAEF400D73405 /* PieceConstants.h */,
 				28327E01196D8EF7004D6464 /* Evaluator.h */,
 				28C0FDC0197A182500E4E63C /* EvaluatorTracker.h */,
 				28FCAB951975C7E700FBD2FF /* ExchangeSimulator.h */,
 				28C86E2F197DBA4D008E8D8E /* HashTable.h */,
+				28F2582719B1256A00883D78 /* Move.h */,
+				28F2582919B1256A00883D78 /* MovementCalculator.h */,
 				518B50CD196C92E700F534A4 /* Node.h */,
-				5122FF251997BB1D001612B0 /* Move.h */,
 				286B42A81976072A001F16D3 /* MoveConverter.h */,
-				5122FF221997BA63001612B0 /* MovementCalculator.h */,
 				51967401196CBCDD0072D6B1 /* OpeningBook.h */,
 				51967405196CBCE50072D6B1 /* OpeningMove.h */,
 				28B386E7196DED720083ED7E /* RunAIInput.h */,
@@ -342,7 +342,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				285BDFF11971AD7500597698 /* WhiteKing.png in Resources */,
-				51967408196CBD1D0072D6B1 /* _Opening Book.txt in Resources */,
 				285BDFF41971AD7500597698 /* WhiteQueen.png in Resources */,
 				285BDFE81971AD7500597698 /* BlackBishop.png in Resources */,
 				285BDFEE1971AD7500597698 /* Board.png in Resources */,
@@ -357,6 +356,7 @@
 				285BDFF21971AD7500597698 /* WhiteKnight.png in Resources */,
 				28C5B03E197EFA4D0093A08C /* preferencesIcon.png in Resources */,
 				285BDFE91971AD7500597698 /* BlackKing.png in Resources */,
+				280A44E819BE5464004F4588 /* _Opening Book.txt in Resources */,
 				285BDFEA1971AD7500597698 /* BlackKnight.png in Resources */,
 				28C5838B196F21D900D538AD /* _Preferences.txt in Resources */,
 			);
@@ -389,7 +389,6 @@
 				28C0FDC4197A1C9200E4E63C /* Evaluator_Support.cpp in Sources */,
 				286B42A91976072A001F16D3 /* MoveConverter.cpp in Sources */,
 				28D2D2C8196C751E00C4E9A6 /* Game.cpp in Sources */,
-				5122FF231997BA63001612B0 /* MovementCalculator.cpp in Sources */,
 				28327E04196D8EF7004D6464 /* Evaluator.cpp in Sources */,
 				28C86E30197DBA4D008E8D8E /* HashTable.cpp in Sources */,
 				28D2D2B7196C750600C4E9A6 /* main.cpp in Sources */,
@@ -403,6 +402,7 @@
 				28D2D2D1196C7B7400C4E9A6 /* SpriteHolder.cpp in Sources */,
 				28E47BDB196DA39500107E27 /* EndGameMenu.cpp in Sources */,
 				28FCAB961975C7E700FBD2FF /* ExchangeSimulator.cpp in Sources */,
+				28F2582C19B1256A00883D78 /* MovementCalculator.cpp in Sources */,
 				28D2D2CE196C761E00C4E9A6 /* Controller.cpp in Sources */,
 				28D2D2CB196C754000C4E9A6 /* Board.cpp in Sources */,
 				28C0FDC1197A182500E4E63C /* EvaluatorTracker.cpp in Sources */,

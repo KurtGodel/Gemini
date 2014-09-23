@@ -187,17 +187,46 @@ void AI::run()
                     int from = openingMove/100;
                     int to = openingMove%100;
                     
-                    // chek legality; website the opening book was grabbed from has... problems
-                    for(int i=0; i<moveLength[0]; i++)
+                    while (gameAiCommunicator->lock.try_lock()) {};
+                    bool isAIBlack = gameAiCommunicator->isAIBlack;
+                    gameAiCommunicator->lock.unlock();
+                    
+                    if(isAIBlack)
                     {
-                        if(move[i].from==from && move[i].to==to)
+                        // chek legality; website the opening book was grabbed from has... problems
+                        for(int i=0; i<moveLength[0]; i++)
                         {
-                            while(!gameAiCommunicator->lock.try_lock()) {}
-                            gameAiCommunicator->from = from;
-                            gameAiCommunicator->to = to;
-                            gameAiCommunicator->shouldAiBeRunning = false;
-                            gameAiCommunicator->lock.unlock();
-                            return;
+                            if(move[i].from==from && move[i].to==to)
+                            {
+                                while(!gameAiCommunicator->lock.try_lock()) {}
+                                gameAiCommunicator->from = from;
+                                gameAiCommunicator->to = to;
+                                gameAiCommunicator->shouldAiBeRunning = false;
+                                gameAiCommunicator->lock.unlock();
+                                return;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // chek legality; website the opening book was grabbed from has... problems
+                        int x = from/8;
+                        int y = from%8;
+                        from = 8*x+(7-y);
+                        x = to/8;
+                        y = to%8;
+                        to = 8*x+(7-y);
+                        for(int i=0; i<moveLength[0]; i++)
+                        {
+                            if(move[i].from==from && move[i].to==to)
+                            {
+                                while(!gameAiCommunicator->lock.try_lock()) {}
+                                gameAiCommunicator->from = from;
+                                gameAiCommunicator->to = to;
+                                gameAiCommunicator->shouldAiBeRunning = false;
+                                gameAiCommunicator->lock.unlock();
+                                return;
+                            }
                         }
                     }
                 }

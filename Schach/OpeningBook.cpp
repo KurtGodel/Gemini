@@ -62,6 +62,7 @@ OpeningBook::OpeningBook()
     board.lastMove[1] = arr[69];
     board.fiftyMoveDrawCounter = arr[70];
     
+    
     std::string line;
     std::ifstream myfile (resourcePath()+"_Opening Book.txt");
     std::string str = "";
@@ -69,7 +70,7 @@ OpeningBook::OpeningBook()
     {
         while(getline(myfile,line))
         {
-            str += line;
+            str += line + "\n";
         }
         myfile.close();
     }
@@ -80,9 +81,12 @@ OpeningBook::OpeningBook()
     
     if(str.length()!=0)
     {
+        /*
         str.erase(remove(str.begin(), str.end(), '\t'), str.end());
         str.erase(remove(str.begin(), str.end(), ' '), str.end());
         root(str, 0);
+        */
+        loadOpeningBook(str);
     }
     else
     {
@@ -1301,7 +1305,7 @@ int OpeningBook::getRandomOpeningMove()
         -3, -1, 0, 0, 0, 0, 1, 3,
         -2, -1, 0, 0, 0, 0, 1, 2,
         -4, -1, 0, 0, 0, 0, 1, 4,
-        1,1,1,1,7,7,0
+        1,1,1,1,0,0,0
     };
     
     board.set(arr);
@@ -1309,6 +1313,7 @@ int OpeningBook::getRandomOpeningMove()
     Board* b = &board;
     
     OpeningMove hash = search(b);
+    
     if(hash.move.size()==0)
     {
         return -1;
@@ -1328,11 +1333,13 @@ int OpeningBook::getRandomOpeningMove()
             sum += hash.move[i+2];
         }
     }
+    
     int r = rand()%sum;
     if(r<0)
     {
         r += sum;
     }
+    
     for(i=0; i<hash.move.size(); i+=3)
     {
         if(hash.move[i+2] > threshold)
@@ -1396,8 +1403,10 @@ int OpeningBook::searchRandom(Board* b)
     int sum = 0;
     for(i=0; i<hash.move.size(); i+=3)
     {
+        std::cout << hash.move[i] << "," << hash.move[i+1] << "," << hash.move[i+2] << "\n";
         sum += hash.move[i+2];
     }
+    std::cout << "\n\n";
     int threshold = minPercentThreshold*sum;
     sum = 0;
     for(i=0; i<hash.move.size(); i+=3)
@@ -1424,4 +1433,139 @@ int OpeningBook::searchRandom(Board* b)
         }
     }
     return -1;
+}
+
+void OpeningBook::toInt(int bytes) {
+    if(bytes == 8) {
+        uint64_t rtn = 0;
+        for(uint8_t i=0; i<bytes; i++) {
+            rtn += (uint64_t)charsForConversion[i] << (8*i);
+        }
+        int64ForConversion = rtn;
+    }
+    else if(bytes == 4) {
+        uint32_t rtn = 0;
+        for(uint8_t i=0; i<bytes; i++) {
+            rtn += (uint32_t)charsForConversion[i] << (8*i);
+        }
+        int32ForConversion = rtn;
+    }
+    else if(bytes == 2) {
+        uint16_t rtn = 0;
+        for(uint8_t i=0; i<bytes; i++) {
+            rtn += (uint16_t)charsForConversion[i] << (8*i);
+        }
+        int16ForConversion = rtn;
+    }
+    else if(bytes == 1) {
+        uint8_t rtn = 0;
+        for(uint8_t i=0; i<bytes; i++) {
+            rtn += (uint8_t)charsForConversion[i] << (8*i);
+        }
+        int8ForConversion = rtn;
+    }
+}
+
+void OpeningBook::toString(uint64_t input, int bytes) {
+    uint8_t *ptr = (uint8_t*)&input;
+    for(uint8_t i=0; i<bytes; i++) {
+        charsForConversion[i] = ptr[i];
+    }
+}
+
+
+void OpeningBook::loadOpeningBook(std::string str)
+{
+    int i, j;
+    uint64_t key;
+    int numberOfMoves;
+    uint16_t move;
+    uint8_t weight;
+    
+    for(i=0; i<str.size(); i=i)
+    {
+        // get key
+        if(i+8 >= str.size())
+        {
+            break;
+        }
+        
+        for(j=0; j<8; j++) {
+            
+            charsForConversion[j] = str[i+j];
+        }
+        
+        toInt(8);
+        key = int64ForConversion;
+        
+        if(key == 784518378181513948)
+        {
+            
+            int q = 2;
+            q = 512;
+        }
+        
+        i += 8;
+        
+        if(i+1 >= str.size())
+        {
+            break;
+        }
+        
+        // get number of moves
+        charsForConversion[0] = str[i];
+        toInt(1);
+        numberOfMoves = int8ForConversion;
+        
+        i++;
+        
+        for(j=0; j<numberOfMoves; j++)
+        {
+            if(i+3 >= str.size())
+            {
+                break;
+            }
+            charsForConversion[0] = str[i];
+            charsForConversion[1] = str[i+1];
+            i += 2;
+            toInt(2);
+            move = int16ForConversion;
+            charsForConversion[0] = str[i];
+            toInt(1);
+            weight = int8ForConversion;
+            i++;
+            newStore(key, move/100, move%100, weight);
+        }
+    }
+}
+
+void OpeningBook::newStore(uint64_t key, int from, int to, int weight)
+{
+    if(weight >= minThreshold)
+    {
+        std::unordered_map<uint64_t, OpeningMove>::iterator it = table.find(key);
+        if(it == table.end())
+        {
+            // no current position in table
+            OpeningMove move;
+            move.move.push_back(from);
+            move.move.push_back(to) ;
+            move.move.push_back(weight);
+            table.insert(std::make_pair(key, move));
+        }
+        else
+        {
+            // add to current
+            for(int i=0; i<it->second.move.size(); i+=3)
+            {
+                if(it->second.move[i] == from && it->second.move[i+1] == to)
+                {
+                    return;
+                }
+            }
+            it->second.move.push_back(from);
+            it->second.move.push_back(to);
+            it->second.move.push_back(weight);
+        }
+    }
 }

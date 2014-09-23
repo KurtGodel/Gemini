@@ -1275,6 +1275,8 @@ int Evaluator::eval(int layer, int endOfLastMove)
     net += (evaluatorTracker.cpuRooks - evaluatorTracker.humanRooks) * (openingRookValue * stage + endingRookValue * (1-stage));
     net += (evaluatorTracker.cpuQueens - evaluatorTracker.humanQueens) * (openingQueenValue * stage + endingQueenValue * (1-stage));
     
+    net *= 1.2;
+    
     net += cpuKingValue[evaluatorTracker.cpuKing] * stage + endGameKingValue[evaluatorTracker.cpuKing] * (1-stage);
     net -= humanKingValue[evaluatorTracker.humanKing] * stage + endGameKingValue[evaluatorTracker.humanKing] * (1-stage);
 

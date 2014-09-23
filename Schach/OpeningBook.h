@@ -41,6 +41,16 @@ private:
     std::unordered_map<uint64_t, OpeningMove> table;
     Board board;
     int counter = 0;
+    
+    void loadOpeningBook(std::string str);
+    void newStore(uint64_t key, int from, int to, int weight);
+    void toInt(int bytes);
+    void toString(uint64_t input, int bytes);
+    uint8_t charsForConversion[9];
+    uint8_t int8ForConversion;
+    uint16_t int16ForConversion;
+    uint32_t int32ForConversion;
+    uint64_t int64ForConversion;
 };
 
 #endif /* defined(__Schach__OpeningBook__) */
