@@ -22,22 +22,16 @@
 class Evaluator
 {
 public:
-    int debugVar = 0;
     Evaluator(Board* aiBoard);
-    int makeMove(int from, int to, int layer, Board* board);
-    void undoMove(int from, int to, int layer, Board* board, int sto);
-    void start(Board* board);
-    int eval(int layer, int endOfLastMove);
-    int pieceToValue(int num);
+    int makeMove(int from, int to, int layer, Board* board);                // run whenever a move is made by AI in its search
+    void undoMove(int from, int to, int layer, Board* board, int sto);      // run whenever a move is undone by AI in its search
+    void start(Board* board);                                               // run at the start of an AI search
+    int eval(int layer, int endOfLastMove);                                 // evaluates a position
+    int pieceToValue(int num);                                              // returns 
     int getPieceCount();
     float staticExchangeEvaluation(int sq, int layer);
-    uint8_t getManCount();
-    
-    int threeManEval(int layer);
-    int fourManEval(int layer);
     
 private:
-    
     const int specialEvalFailed = 10000000;
     
     int kpVk(int layer);
@@ -52,28 +46,7 @@ private:
     int pawnStructureEval(float stage);
     std::unordered_map<uint64_t, int> pawnStructureMap;
     
-    /*
-     SOURCES
-     http://home.comcast.net/~danheisman/Articles/evaluation_of_material_imbalance.htm
-     a/h pawn = 0.85
-     b-g pawn = 1.04
-     knight = 3.25 + (#-5)/16
-     bishop = 3.25
-     bishopPair = 0.5
-     rook = 5 - (#-5)/8
-     queen = 0.95
-     http://home.comcast.net/~danheisman/Articles/doubled_pawns.htm
-     doubled up pawn = -0.2ish
-     */
-    
-    
-    /*
-     TO ADD
-     half and open columns
-     queen-side majority
-     */
-    
-    // 1. Material
+    // 1. Material Values
     int openingPawnValue = 513;
     int endingPawnValue = 879;
     int openingKnightValue = 1466;
@@ -87,7 +60,7 @@ private:
     
     
     
-    // 2. Pawns
+    // 2. Pawns Bonuses
     int openingDoubledPawnsBonus = 0;
     int endingDoubledPawnsBonus = -303;
     int openingPawnIslandBonus = -95;
@@ -95,7 +68,7 @@ private:
     int openingPawnAdvancementBonus[8] = {0,0,0,0,0,0,0,0};
     int endingPawnAdvancementBonus[8] = {120,100,80,60,40,20,0,0};
     
-    // in addition to the normal pawnAdvancementBonus
+    // these are in addition to the normal pawnAdvancementBonus
     int openingHalfPassedPawnBonus[8] = {0,0,0,0,0,0,0,0};
     int endingHalfPassedPawnBonus[8] = {180,150,120,90,60,30,0,0};
     int openingPassedPawnBonus[8] = {4314,1422,619,233,0,  0,0,0};
@@ -103,15 +76,15 @@ private:
     
     
     
-    // 3. Pieces
+    // 3. Pieces Bonuses
     int openingBishopPairBonus = 271;
     int endingBishopPairBonus = 829;
     int openingRookPairBonus = 0;
     int endingRookPairBonus = -816;
     
     
-    
-    // 4. Kings
+    // 4. King Values & Bonuses
+    // cpuKingValue and endGameKingValue are linearly interpolated between as the game progresses
     int cpuKingValue[64] = {
         100,    150,    200,    250,    300,    350,    400,    450,
         100,    150,    200,    250,    300,    350,    400,    450,
@@ -122,7 +95,7 @@ private:
         100,    150,    200,    250,    300,    350,    400,    450,
         100,    150,    200,    250,    300,    350,    400,    450
     };
-    int humanKingValue[64];
+    int humanKingValue[64];     // set to opposite of cpuKingValues in constructor
     
     int endGameKingValue[64] = {
         0,  31, 56, 75, 75, 56, 31, 0,
@@ -134,13 +107,13 @@ private:
         31, 56, 75, 89, 89, 75, 56, 31,
         0,  31, 56, 75, 75, 56, 31, 0
     };
+    // unmoved pawns to protect king both before and after castling
     int queenPawnsBackBeforeCastlingBonus = 48;
     int queenPawnsSecondBackBeforeCastlingBonus = 16;
     int kingPawnsBackBeforeCastlingBonus = 60;
     int kingPawnsSecondBackBeforeCastlingBonus = 16;
     int queenEmptyBeforeCastling = 12;
     int kingEmptyBeforeCastling = 16;
-    
     int pawnsBackRankAfterCastling = 150;
     int pawnsSecondBackRankAfterCastling = 48;
     int centerCannotCastleBonus = -36;
@@ -158,7 +131,6 @@ private:
     */
     // human                            cpu
     
-    // average pawn in opening = 513 + 1.75*mobilityBonus
     int cpuMoveBonus[6][64] = {
         {
             28, 28, 28, 28, 28, 28, 28, 28,
@@ -223,26 +195,24 @@ private:
     };
     int humanMoveBonus[6][64];
     
-    
-    
-    // 6. Threats
-    // rough average value of pieces
-    int openingExchangeValue[5] = {562, 1827, 2842, 5193, 100000};
-    int endingExchangeValue[5] = {879, 2333, 4077, 7162, 300000};
-    
-    
+    // the importance of mobility changes as the game progresses
     float openingMoveBonusMultiplier = 1;
     float endingMoveBonusMultiplier = 0;
     
+    
+    // 6. Threats - values are based roughly on the average value of each piece; this is confirmed through a 200-game simulation to be roughly ideal, indicating that our guess as to whether a piece is hanging is pretty good
+    // rough average value of pieces
+    // pawn, minors, rook, queen, king
+    int openingExchangeValue[5] = {562, 1827, 2842, 5193, 100000};
+    int endingExchangeValue[5] = {879, 2333, 4077, 7162, 300000};
     int closeToKingSafetyBonus = 0;
     int closeToKingDangerBonus = -135;
     int openingInitiativeBonus = 75;
     int endingInitiativeBonus = 75;
     
-    //
     int contemptFactorSlope = 100;          // multiplied by stage (between 1.0 and 0.0)
     
-    Board* board;
+    Board* board;                           // pointer to the current board
     
     int spaceControl[30][64][10];
     int humanEvalMove(int skip, int layer);
@@ -258,6 +228,10 @@ private:
     int hangingHumanPiece[64] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     int hangingCpuPieceLength = 0;
     int hangingHumanPieceLength = 0;
+    
+    uint8_t getManCount();
+    int threeManEval(int layer);
+    int fourManEval(int layer);
     int hangingToCheck(float value);
     int signum(int x);
     int pieceSafe(int sq, int layer);
