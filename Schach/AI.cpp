@@ -1074,11 +1074,6 @@ bool AI::boardEquality(char* arr)
     return true;
 }
 
-bool AI::debugFunction()
-{
-    return false;
-}
-
 void AI::quickSortIndeciesLargeToSmall(int* indecies, float* values, int start, int pivot) {
     
     int swapIndex;
