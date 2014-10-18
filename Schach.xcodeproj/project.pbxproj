@@ -52,7 +52,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		280A44E719BE5464004F4588 /* _Opening Book.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "_Opening Book.txt"; path = "Schach/_Opening Book.txt"; sourceTree = "<group>"; };
+		280A44E719BE5464004F4588 /* _Opening Book.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "_Opening Book.txt"; sourceTree = "<group>"; };
 		281CCC82196F112C00CDF049 /* PreferencesMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PreferencesMenu.cpp; sourceTree = "<group>"; };
 		281CCC83196F112C00CDF049 /* PreferencesMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesMenu.h; sourceTree = "<group>"; };
 		28327E00196D8EF7004D6464 /* Evaluator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Evaluator.cpp; sourceTree = "<group>"; };
@@ -195,7 +195,6 @@
 		28D2D2A4196C750600C4E9A6 = {
 			isa = PBXGroup;
 			children = (
-				280A44E719BE5464004F4588 /* _Opening Book.txt */,
 				28D2D2B0196C750600C4E9A6 /* Schach */,
 				28D2D2AF196C750600C4E9A6 /* Products */,
 			);
@@ -237,6 +236,7 @@
 			children = (
 				285BDFD91971AD7500597698 /* Piece PNGs */,
 				285BDFE01971AD7500597698 /* Board.png */,
+				280A44E719BE5464004F4588 /* _Opening Book.txt */,
 				28C5B03D197EFA4D0093A08C /* preferencesIcon.png */,
 				28C5838A196F21D900D538AD /* _Preferences.txt */,
 				28D2D2BD196C750600C4E9A6 /* sansation.ttf */,

@@ -10,29 +10,29 @@
 	<string>Schach</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>128A2D1D-6BBA-45AF-BA8F-82989DD51970</key>
+		<key>EDEE242FBE681D61C0E9DD3A3C4BDC0886A2765A</key>
 		<string>https://github.com/KurtGodel/Gemini.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Schach.xcodeproj/project.xcworkspace</string>
+	<string>Schach.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>128A2D1D-6BBA-45AF-BA8F-82989DD51970</key>
+		<key>EDEE242FBE681D61C0E9DD3A3C4BDC0886A2765A</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/KurtGodel/Gemini.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>128A2D1D-6BBA-45AF-BA8F-82989DD51970</string>
+	<string>EDEE242FBE681D61C0E9DD3A3C4BDC0886A2765A</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>128A2D1D-6BBA-45AF-BA8F-82989DD51970</string>
+			<string>EDEE242FBE681D61C0E9DD3A3C4BDC0886A2765A</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Gemini</string>
 		</dict>
